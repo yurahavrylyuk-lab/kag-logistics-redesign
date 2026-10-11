@@ -1,10 +1,11 @@
 export type MediaAsset = {
-  src: string;
+  src?: string;
   alt: string;
+  status: 'available' | 'needs-approved-asset';
 };
 
 export const media = {
-  careers: { src: '/media/careers-team.jpg', alt: 'KAG team members collaborating at work' },
-  hero: { src: '/media/hero-terminal.jpg', alt: 'Industrial logistics terminal' },
-  industries: { src: '/media/industry-terminal.jpg', alt: 'Freight equipment at an industrial terminal' },
+  careers: { alt: 'KAG team members collaborating at work', status: 'needs-approved-asset' },
+  hero: { alt: 'Industrial logistics terminal', status: 'needs-approved-asset' },
+  industries: { alt: 'Freight equipment at an industrial terminal', status: 'needs-approved-asset' },
 } satisfies Record<string, MediaAsset>;

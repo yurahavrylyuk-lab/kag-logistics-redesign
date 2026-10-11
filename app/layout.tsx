@@ -4,12 +4,10 @@ import { ThemeProvider } from '@/features/theme/ThemeProvider';
 import { ThemeScript } from '@/features/theme/ThemeScript';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { createPageMetadata } from '@/lib/metadata';
 import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'KAG Logistics',
-  description: 'North American logistics and transportation management.',
-};
+export const metadata: Metadata = createPageMetadata({ title: 'Logistics with operational control', description: 'North American logistics and transportation management.', path: '/' });
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (

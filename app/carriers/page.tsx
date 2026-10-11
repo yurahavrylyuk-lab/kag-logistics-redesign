@@ -3,8 +3,10 @@ import { CapabilityList } from '@/components/sections/CapabilityList';
 import { HubHero } from '@/components/sections/HubHero';
 import { LinkOrUnavailable } from '@/components/ui/LinkOrUnavailable';
 import { externalDestinations } from '@/content/destinations';
+import { createPageMetadata } from '@/lib/metadata';
 
 const carrierBenefits = ['A focused carrier journey', 'Clear operating expectations', 'Support without a fake portal promise'];
+export const metadata = createPageMetadata({ title: 'Carriers', description: 'A focused carrier journey for logistics relationships.', path: '/carriers' });
 
 export default function CarriersPage() {
   return <main id="main-content">

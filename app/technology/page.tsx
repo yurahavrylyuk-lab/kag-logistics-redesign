@@ -2,6 +2,9 @@ import { CapabilityList } from '@/components/sections/CapabilityList';
 import { CommandCenterDemo } from '@/components/sections/CommandCenterDemo';
 import { HubHero } from '@/components/sections/HubHero';
 import { technologyCapabilities, technologySummary } from '@/content/technology';
+import { createPageMetadata } from '@/lib/metadata';
+
+export const metadata = createPageMetadata({ title: 'Technology', description: 'Operational technology capabilities for logistics coordination and visibility.', path: '/technology' });
 
 export default function TechnologyPage() {
   return <main id="main-content">

@@ -1,6 +1,9 @@
 import { HubHero } from '@/components/sections/HubHero';
 import { LinkOrUnavailable } from '@/components/ui/LinkOrUnavailable';
 import { externalDestinations } from '@/content/destinations';
+import { createPageMetadata } from '@/lib/metadata';
+
+export const metadata = createPageMetadata({ title: 'Careers', description: 'A careers route for people who help keep critical supply chains moving.', path: '/careers' });
 
 export default function CareersPage() {
   return <main id="main-content">
