@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('quote wizard validates, completes four data-entry steps, and submits', async ({ page }) => {
+test('quote wizard validates, completes four data-entry steps, and prepares an email', async ({ page }) => {
   await page.goto('/quote');
   await expect(page.getByText('Step 1 of 4')).toBeVisible();
   await page.getByRole('button', { name: 'Next', exact: true }).click();
@@ -22,6 +22,6 @@ test('quote wizard validates, completes four data-entry steps, and submits', asy
   await page.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByText('Review & Submit')).toBeVisible();
   await page.getByRole('button', { name: 'Request Pricing' }).click();
-  await expect(page.getByRole('heading', { name: 'Prototype request prepared' })).toBeVisible();
-  await expect(page.getByText(/did not send your details to KAG/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your quote email is ready to send' })).toBeVisible();
+  await expect(page.getByText(/send it from your email client to complete the request/i)).toBeVisible();
 });
