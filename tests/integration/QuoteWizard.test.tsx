@@ -58,7 +58,7 @@ describe('QuoteWizard', () => {
     await user.type(screen.getByLabelText('Business email'), 'taylor@example.com');
     await user.type(screen.getByLabelText(/Business phone/), '555-0100');
     await user.type(screen.getByLabelText(/Shipment notes/), 'Dock appointment preferred.');
-    await user.click(screen.getByRole('checkbox', { name: /prototype request/i }));
+    await user.click(screen.getByRole('checkbox', { name: /prepare this quote request/i }));
     await user.click(screen.getByRole('button', { name: 'Next' }));
 
     expect(screen.getByText('Toronto, ON, M5V 1E3, Canada')).toBeInTheDocument();
@@ -88,9 +88,9 @@ describe('QuoteWizard', () => {
     expect(screen.getByText('Dry Van')).toBeInTheDocument();
   });
 
-  it('shows confirmation after a valid mock submission', async () => {
+  it('shows accurate confirmation after preparing a quote email', async () => {
     const user = userEvent.setup();
-    render(<QuoteWizard />);
+    render(<QuoteWizard service={createMockQuoteSubmissionService()} />);
     await user.click(screen.getByRole('button', { name: 'Dry Van' }));
     await user.click(screen.getByRole('button', { name: 'Next' }));
     await user.type(screen.getByLabelText('Origin city'), 'Cleveland');
@@ -106,8 +106,8 @@ describe('QuoteWizard', () => {
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: 'Next' }));
     await user.click(screen.getByRole('button', { name: 'Request Pricing' }));
-    expect(await screen.findByRole('heading', { name: 'Prototype request prepared' })).toBeInTheDocument();
-    expect(screen.getByText(/did not send your details to KAG/i)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Your quote email is ready to send' })).toBeInTheDocument();
+    expect(screen.getByText(/send it from your email client to complete the request/i)).toBeInTheDocument();
   });
 
   it('maps a rejected service promise to a recoverable retry state', async () => {
@@ -126,7 +126,7 @@ describe('QuoteWizard', () => {
     await user.type(screen.getByLabelText('Last name'), 'Smith');
     await user.type(screen.getByLabelText('Company'), 'Acme');
     await user.type(screen.getByLabelText('Business email'), 'taylor@example.com');
-    await user.click(screen.getByRole('checkbox', { name: /prototype request/i }));
+    await user.click(screen.getByRole('checkbox', { name: /prepare this quote request/i }));
     await user.click(screen.getByRole('button', { name: 'Next' }));
     await user.click(screen.getByRole('button', { name: 'Request Pricing' }));
 
