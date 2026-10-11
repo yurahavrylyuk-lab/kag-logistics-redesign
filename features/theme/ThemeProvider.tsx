@@ -26,31 +26,24 @@ function applyTheme(theme: ResolvedTheme) {
 }
 
 export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [preference, setPreferenceState] = useState<ThemePreference>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
+  const [preference, setPreferenceState] = useState<ThemePreference>(readThemePreference);
+  const [systemDark, setSystemDark] = useState(() => (
+    typeof window !== 'undefined' && getMediaQuery().matches
+  ));
+  const resolvedTheme = resolveTheme(preference, systemDark);
 
   useEffect(() => {
-    const initialPreference = readThemePreference();
-    const mediaQuery = getMediaQuery();
-    setPreferenceState(initialPreference);
-    setResolvedTheme(resolveTheme(initialPreference, mediaQuery.matches));
-  }, []);
+    applyTheme(resolvedTheme);
+  }, [resolvedTheme]);
 
   useEffect(() => {
-    const mediaQuery = getMediaQuery();
-    const applyResolvedTheme = (theme: ResolvedTheme) => {
-      setResolvedTheme(theme);
-      applyTheme(theme);
-    };
-
-    applyResolvedTheme(resolveTheme(preference, mediaQuery.matches));
-
     if (preference !== 'system') {
       return undefined;
     }
 
+    const mediaQuery = getMediaQuery();
     const handleChange = (event: MediaQueryListEvent) => {
-      applyResolvedTheme(resolveTheme('system', event.matches));
+      setSystemDark(event.matches);
     };
 
     mediaQuery.addEventListener('change', handleChange);
