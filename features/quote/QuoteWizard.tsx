@@ -7,6 +7,7 @@ import { QuoteProgress } from './QuoteProgress';
 import { QuoteReview } from './QuoteReview';
 import { quoteSchema } from './schema';
 import type { QuoteRequest, QuoteSubmissionService } from './types';
+import { track } from '@/features/analytics/track';
 
 const defaults: QuoteRequest = {
   freightType: '',
@@ -81,6 +82,7 @@ export function QuoteWizard({ service = createMockQuoteSubmissionService() }: { 
     }
     setState('submitting');
     const result = await service.submit(getValues());
+    track('quote_submitted', { placement: 'quote-wizard', outcome: result.ok ? 'success' : 'error' });
     setState(result.ok ? 'success' : 'error');
   };
 
