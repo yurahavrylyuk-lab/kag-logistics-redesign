@@ -12,9 +12,9 @@ export function LinkOrUnavailable({ children, destination }: LinkOrUnavailablePr
   }
 
   return (
-    <span aria-label={destination.message} role="status">
-      <span aria-hidden="true">{children}</span>
-      <span className="sr-only">{destination.message}</span>
+    <span className="unavailable-action" role="status">
+      <span>{children}</span>
+      <span className="unavailable-message">{destination.message}</span>
     </span>
   );
 }

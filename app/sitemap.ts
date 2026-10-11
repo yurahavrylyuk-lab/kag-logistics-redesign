@@ -7,6 +7,6 @@ import { configuredSiteOrigin } from '@/lib/metadata';
 export default function sitemap(): MetadataRoute.Sitemap {
   const origin = configuredSiteOrigin();
   if (!origin) return [];
-  const paths = ['/', '/quote', '/technology', '/carriers', '/careers', ...solutions.map(({ slug }) => `/solutions/${slug}`), ...industries.map(({ slug }) => `/industries/${slug}`), ...resources.map(({ slug }) => `/resources/${slug}`)];
+  const paths = ['/', '/quote', '/technology', '/carriers', '/careers', '/solutions', '/industries', '/resources', ...solutions.map(({ slug }) => `/solutions/${slug}`), ...industries.map(({ slug }) => `/industries/${slug}`), ...resources.map(({ slug }) => `/resources/${slug}`)];
   return paths.map((path) => ({ url: `${origin}${path}` }));
 }

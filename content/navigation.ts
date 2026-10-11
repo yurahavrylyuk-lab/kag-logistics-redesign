@@ -7,10 +7,10 @@ export type NavigationItem = {
 };
 
 export const primaryNavigation: NavigationItem[] = [
-  { label: 'Solutions', href: '/solutions/freight-brokerage' },
-  { label: 'Industries', href: '/industries/chemicals' },
+  { label: 'Solutions', href: '/solutions' },
+  { label: 'Industries', href: '/industries' },
   { label: 'Technology', href: '/technology' },
-  { label: 'Resources', href: '/resources/building-supply-chain-control' },
+  { label: 'Resources', href: '/resources' },
   { label: 'Carriers', href: '/carriers' },
   { label: 'Careers', href: '/careers' },
 ];

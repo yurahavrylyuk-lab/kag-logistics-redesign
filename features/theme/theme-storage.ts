@@ -5,10 +5,18 @@ export function readThemePreference(): ThemePreference {
     return 'system';
   }
 
-  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+  } catch {
+    return 'system';
+  }
 }
 
 export function writeThemePreference(preference: ThemePreference): void {
-  window.localStorage.setItem(THEME_STORAGE_KEY, preference);
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, preference);
+  } catch {
+    // Storage can be unavailable in privacy-constrained contexts.
+  }
 }

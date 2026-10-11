@@ -22,5 +22,6 @@ test('quote wizard validates, completes four data-entry steps, and submits', asy
   await page.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByText('Review & Submit')).toBeVisible();
   await page.getByRole('button', { name: 'Request Pricing' }).click();
-  await expect(page.getByRole('heading', { name: 'Request received' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Prototype request prepared' })).toBeVisible();
+  await expect(page.getByText(/did not send your details to KAG/i)).toBeVisible();
 });

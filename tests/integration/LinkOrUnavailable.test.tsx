@@ -14,6 +14,11 @@ describe('LinkOrUnavailable', () => {
     expect(screen.getByText('Customer Login is not configured for this prototype.')).toBeInTheDocument();
   });
 
+  it('shows the unavailable explanation to sighted users', () => {
+    render(<LinkOrUnavailable destination={{ kind: 'unavailable', message: 'This destination is not configured.' }}>Customer Login</LinkOrUnavailable>);
+    expect(screen.getByText('This destination is not configured.')).toBeVisible();
+  });
+
   it('renders a configured URL as a real link', () => {
     render(<LinkOrUnavailable destination={{ kind: 'url', href: 'https://example.com' }}>Customer Login</LinkOrUnavailable>);
 

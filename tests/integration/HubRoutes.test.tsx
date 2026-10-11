@@ -20,4 +20,14 @@ describe('focused KAG hub routes', () => {
     expect(screen.getByRole('heading', { name: /build what moves industry/i })).toBeInTheDocument();
     expect(screen.getByText(/job-search destination is not configured/i)).toBeInTheDocument();
   });
+
+  it('frames focused carrier and career journeys around benefits, growth, training, and work life', () => {
+    const { unmount } = render(<CarriersPage />);
+    expect(screen.getByRole('heading', { name: /clarity at every handoff/i })).toBeInTheDocument();
+    unmount();
+    render(<CareersPage />);
+    expect(screen.getByRole('heading', { name: 'Career Growth' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Training & learning' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Life at KAG' })).toBeInTheDocument();
+  });
 });

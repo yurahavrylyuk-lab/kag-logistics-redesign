@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { RouteContent, RouteSection } from '@/lib/route-content';
 import { CapabilityList } from './CapabilityList';
+import { RouteAnalytics } from '@/features/analytics/RouteAnalytics';
 
 type DetailPageTemplateProps = {
   content: RouteContent;
@@ -13,6 +14,7 @@ export function DetailPageTemplate({ content, section }: DetailPageTemplateProps
 
   return (
     <main id="main-content">
+      {section === 'solutions' ? <RouteAnalytics event="solution_viewed" properties={{ solutionId: content.slug, source: 'detail-page' }} /> : null}
       <section className="detail-hero content-section">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{content.title}</h1>

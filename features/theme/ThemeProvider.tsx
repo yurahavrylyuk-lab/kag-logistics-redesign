@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { resolveTheme } from './resolve-theme';
 import { readThemePreference, writeThemePreference } from './theme-storage';
 import type { ResolvedTheme, ThemePreference } from './types';
+import { track } from '@/features/analytics/track';
 
 type ThemeContextValue = {
   preference: ThemePreference;
@@ -55,6 +56,10 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
     resolvedTheme,
     setPreference: (nextPreference) => {
       writeThemePreference(nextPreference);
+      track('theme_changed', { theme: nextPreference, source: 'theme-toggle' });
+      if (nextPreference === 'system') {
+        setSystemDark(getMediaQuery().matches);
+      }
       setPreferenceState(nextPreference);
     },
   }), [preference, resolvedTheme]);

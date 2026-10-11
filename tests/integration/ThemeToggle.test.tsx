@@ -62,4 +62,18 @@ describe('ThemeToggle', () => {
 
     expect(document.documentElement.dataset.theme).toBe('light');
   });
+
+  it('uses the current OS value when the preference returns to system', async () => {
+    const user = userEvent.setup();
+    render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
+    const select = screen.getByLabelText('Color theme');
+
+    await user.selectOptions(select, 'light');
+    systemDark = false;
+    await user.selectOptions(select, 'dark');
+    systemDark = true;
+    await user.selectOptions(select, 'system');
+
+    expect(document.documentElement.dataset.theme).toBe('dark');
+  });
 });
