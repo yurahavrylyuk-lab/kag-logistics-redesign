@@ -39,7 +39,6 @@ export function QuoteWizard({ service }: { service?: QuoteSubmissionService }) {
   const [step, setStep] = useState(1);
   const [state, setState] = useState<'editing' | 'submitting' | 'success' | 'error'>('editing');
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [referenceId, setReferenceId] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
   const startedAt = useRef<number | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -89,7 +88,6 @@ export function QuoteWizard({ service }: { service?: QuoteSubmissionService }) {
     try {
       const result = await submissionService.submit(parsed.data);
       if (result.ok) {
-        setReferenceId(result.referenceId);
         track('quote_submitted', { source: 'quote-wizard', referenceId: result.referenceId });
         setState('success');
         return;
@@ -99,7 +97,7 @@ export function QuoteWizard({ service }: { service?: QuoteSubmissionService }) {
       track('quote_failed', { step, failureKind: result.kind });
       setState('error');
     } catch {
-      setSubmissionError('A network problem prevented this prototype request from being prepared. Please try again.');
+      setSubmissionError('A network problem prevented your quote email from being prepared. Please try again.');
       track('quote_failed', { step, failureKind: 'network' });
       setState('error');
     }
@@ -118,7 +116,7 @@ export function QuoteWizard({ service }: { service?: QuoteSubmissionService }) {
     await submitRequest();
   };
 
-  if (state === 'success') return <section aria-live="polite" className="quote-result"><h2>Prototype request prepared</h2><p>This front-end prototype did not send your details to KAG. Reference: {referenceId}.</p><button onClick={() => { reset(defaults); setStarted(false); setReferenceId(null); setState('editing'); setStep(1); }} type="button">Start another request</button></section>;
+  if (state === 'success') return <section aria-live="polite" className="quote-result"><h2>Your quote email is ready to send</h2><p>Please send it from your email client to complete the request.</p><button onClick={() => { reset(defaults); setStarted(false); setState('editing'); setStep(1); }} type="button">Start another request</button></section>;
 
   return <form aria-labelledby="quote-wizard-heading" className="quote-wizard" noValidate onSubmit={handleSubmit}>
     <h2 className="sr-only" id="quote-wizard-heading">Request pricing</h2>
@@ -130,7 +128,7 @@ export function QuoteWizard({ service }: { service?: QuoteSubmissionService }) {
     {step === 3 ? <fieldset><legend>Pickup timing</legend><label>Pickup timing<select {...register('pickup.flexibility')}><option value="scheduled">Scheduled</option><option value="flexible">Flexible</option><option value="urgent">Urgent</option></select></label><label>Requested pickup date <span aria-hidden="true">(optional)</span><input type="date" {...register('pickup.date')} /></label></fieldset> : null}
     {step === 4 ? <ContactStep descriptor={descriptor} error={fieldError} register={register} /> : null}
     {step === 5 ? <QuoteReview request={request} /> : null}
-    <div className="wizard-actions">{step > 1 ? <button onClick={() => { setState('editing'); setSubmissionError(null); setStep((current) => current - 1); }} type="button">Back</button> : null}<button disabled={state === 'submitting'} type="submit">{step < 5 ? 'Next' : state === 'submitting' ? 'Submitting…' : state === 'error' ? 'Try again' : 'Request Pricing'}</button></div>
+    <div className="wizard-actions">{step > 1 ? <button onClick={() => { setState('editing'); setSubmissionError(null); setStep((current) => current - 1); }} type="button">Back</button> : null}<button disabled={state === 'submitting'} type="submit">{step < 5 ? 'Next' : state === 'submitting' ? 'Preparing…' : state === 'error' ? 'Try again' : 'Request Pricing'}</button></div>
   </form>;
 }
 
@@ -144,10 +142,10 @@ function FreightStep({ descriptor, error, onSelect, request }: { descriptor: Des
 
 function RouteStep({ descriptor, error, register }: { descriptor: Descriptor; error: ErrorFor; register: Register }) {
   const textField = (label: string, path: 'origin.city' | 'origin.region' | 'destination.city' | 'destination.region', autoComplete: string) => <div><label>{label}<input aria-describedby={descriptor(path, path.endsWith('.city') ? 'route-help' : undefined)} aria-invalid={Boolean(error(path))} autoComplete={autoComplete} required {...register(path)} /></label>{error(path) ? <p className="form-error" id={errorId(path)}>{error(path)}</p> : null}</div>;
-  return <fieldset><legend>Origin and destination</legend><p id="route-help">Use city, state or province, and country. Postal codes help refine the illustrative request.</p><div className="form-grid">{textField('Origin city', 'origin.city', 'address-level2')}{textField('Origin state or province', 'origin.region', 'address-level1')}<label>Origin postal code<input autoComplete="postal-code" {...register('origin.postalCode')} /></label><label>Origin country<select {...register('origin.country')}><option value="US">United States</option><option value="CA">Canada</option></select></label>{textField('Destination city', 'destination.city', 'address-level2')}{textField('Destination state or province', 'destination.region', 'address-level1')}<label>Destination postal code<input autoComplete="postal-code" {...register('destination.postalCode')} /></label><label>Destination country<select {...register('destination.country')}><option value="US">United States</option><option value="CA">Canada</option></select></label></div></fieldset>;
+  return <fieldset><legend>Origin and destination</legend><p id="route-help">Use city, state or province, and country. Postal codes help refine the request.</p><div className="form-grid">{textField('Origin city', 'origin.city', 'address-level2')}{textField('Origin state or province', 'origin.region', 'address-level1')}<label>Origin postal code<input autoComplete="postal-code" {...register('origin.postalCode')} /></label><label>Origin country<select {...register('origin.country')}><option value="US">United States</option><option value="CA">Canada</option></select></label>{textField('Destination city', 'destination.city', 'address-level2')}{textField('Destination state or province', 'destination.region', 'address-level1')}<label>Destination postal code<input autoComplete="postal-code" {...register('destination.postalCode')} /></label><label>Destination country<select {...register('destination.country')}><option value="US">United States</option><option value="CA">Canada</option></select></label></div></fieldset>;
 }
 
 function ContactStep({ descriptor, error, register }: { descriptor: Descriptor; error: ErrorFor; register: Register }) {
   const textField = (label: string, path: 'contact.firstName' | 'contact.lastName' | 'contact.company' | 'contact.email', autoComplete: string, type?: 'email') => <div><label>{label}<input aria-describedby={descriptor(path)} aria-invalid={Boolean(error(path))} autoComplete={autoComplete} required type={type} {...register(path)} /></label>{error(path) ? <p className="form-error" id={errorId(path)}>{error(path)}</p> : null}</div>;
-  return <fieldset><legend>Contact details</legend><div className="form-grid">{textField('First name', 'contact.firstName', 'given-name')}{textField('Last name', 'contact.lastName', 'family-name')}{textField('Company', 'contact.company', 'organization')}{textField('Business email', 'contact.email', 'email', 'email')}<label>Business phone <span aria-hidden="true">(optional)</span><input autoComplete="tel" {...register('contact.phone')} /></label><label>Shipment notes <span aria-hidden="true">(optional)</span><textarea {...register('notes')} /></label></div><label className="checkbox-label"><input aria-describedby={descriptor('consent.privacyAccepted')} aria-invalid={Boolean(error('consent.privacyAccepted'))} required type="checkbox" {...register('consent.privacyAccepted')} />I understand this is a prototype request and no data will be sent to KAG.</label>{error('consent.privacyAccepted') ? <p className="form-error" id={errorId('consent.privacyAccepted')} role="alert">{error('consent.privacyAccepted')}</p> : null}</fieldset>;
+  return <fieldset><legend>Contact details</legend><div className="form-grid">{textField('First name', 'contact.firstName', 'given-name')}{textField('Last name', 'contact.lastName', 'family-name')}{textField('Company', 'contact.company', 'organization')}{textField('Business email', 'contact.email', 'email', 'email')}<label>Business phone <span aria-hidden="true">(optional)</span><input autoComplete="tel" {...register('contact.phone')} /></label><label>Shipment notes <span aria-hidden="true">(optional)</span><textarea {...register('notes')} /></label></div><label className="checkbox-label"><input aria-describedby={descriptor('consent.privacyAccepted')} aria-invalid={Boolean(error('consent.privacyAccepted'))} required type="checkbox" {...register('consent.privacyAccepted')} />I agree to prepare this quote request in my email client for sending.</label>{error('consent.privacyAccepted') ? <p className="form-error" id={errorId('consent.privacyAccepted')} role="alert">{error('consent.privacyAccepted')}</p> : null}</fieldset>;
 }
