@@ -48,6 +48,18 @@ Phase one includes a responsive front-end prototype, illustrative technology vis
 
 The refreshed mark is a conceptual prototype evolution. It must be replaceable by official artwork without restructuring header or footer code.
 
+### Locked phase-one route scope
+
+Phase one is a flagship prototype, not a complete enterprise-site migration.
+
+| Delivery level | Routes / experience |
+| --- | --- |
+| Fully implemented | Homepage `/`; Technology hub `/technology`; Carriers hub `/carriers`; Careers hub `/careers`; the canonical Quote Wizard `/quote` and its homepage entry points |
+| Reusable polished prototype templates | Solution, industry, and resource detail patterns, populated with representative approved content and reused by additional sitemap routes where appropriate |
+| Not required in phase one | Fully unique, deeply authored page experiences for every individual solution, industry, resource, company, legal, or sub-route |
+
+No route may be created merely to satisfy the sitemap. A destination that is neither fully delivered nor supported by an approved reusable template must be omitted from active navigation or represented by an intentional, accessible prototype state.
+
 ## 2. Information architecture
 
 ### Sitemap
@@ -107,6 +119,12 @@ Routes beyond the homepage may initially be compact prototype pages or intention
 | Case studies | Fast trust signal using qualitative outcomes or verified facts | Full story, evidence, and related next action |
 | Carriers | Clear fork in journey | Benefits, resources, and registration experience |
 | Careers | Human and growth signal | Recruiting narrative and job search |
+
+### Destination integrity
+
+All external or not-yet-verified destinations are supplied through centralized configuration. Components must never use `href="#"`, invented production URLs, fake customer-login links, fake ATS links, or fake carrier portals.
+
+When an action lacks a verified destination, the prototype must either omit it or expose an intentional accessible state explaining that the destination is not configured. This rule applies to Customer Login, Ship Now, Search Open Positions, carrier registration/resources, legal links, and external contact actions.
 
 ### Audience journeys
 
@@ -323,10 +341,11 @@ Breakpoints: compact `< 640px`; tablet `640–1023px`; desktop `1024–1439px`; 
 
 1. The root document sets a theme before first paint from persisted preference; if absent, it uses `prefers-color-scheme`.
 2. The user's explicit `light`, `dark`, or `system` preference is stored locally and exposed through a small theme controller.
-3. The controller applies `data-theme` to the document root and updates browser `theme-color` metadata for the active theme.
-4. The server/document shell emits the minimal anti-flash initialization before hydration. The implementation plan must select the framework-appropriate safe mechanism.
-5. Logo components request a named variant from a logo registry: `light`, `dark`, `mono-light`, `mono-dark`, or `mark`; no component hard-codes asset paths.
-6. All visual values consume semantic tokens. Components never branch on raw color literals when a semantic token exists.
+3. While preference is `system`, the controller listens for in-session `prefers-color-scheme` changes and updates the resolved theme. Explicit `light` or `dark` selections are never overridden by OS changes.
+4. The controller applies `data-theme` to the document root and updates browser `theme-color` metadata for the active theme.
+5. The server/document shell emits the minimal anti-flash initialization before hydration. The implementation plan must select the framework-appropriate safe mechanism.
+6. Logo components request a named variant from a logo registry: `light`, `dark`, `mono-light`, `mono-dark`, or `mark`; no component hard-codes asset paths.
+7. All visual values consume semantic tokens. Components never branch on raw color literals when a semantic token exists.
 
 ## 6. Motion system
 
@@ -419,13 +438,13 @@ Only the selected route progress, a one-time alert emphasis, and a subtle state 
 
 ### UX flow and state model
 
-1. **Freight:** `freightType` selection: Liquid Bulk, Dry Bulk, Dry Van, Refrigerated, Flatbed, Container, Expedited, Other/Not Sure.
-2. **Route:** origin and destination (city, region/state, postal code, country); clear field-level guidance.
-3. **Timing:** pickup date/window and flexible/urgent choice where appropriate.
-4. **Contact:** name, company, email, phone, optional notes, and required privacy/consent acknowledgement if policy requires it.
-5. **Review / result:** explicit confirmation before submission, followed by submitting, success, or recoverable error state.
+1. **Freight (Step 1 of 4):** `freightType` selection: Liquid Bulk, Dry Bulk, Dry Van, Refrigerated, Flatbed, Container, Expedited, Other/Not Sure.
+2. **Route (Step 2 of 4):** origin and destination (city, region/state, postal code, country); clear field-level guidance.
+3. **Timing (Step 3 of 4):** pickup date/window and flexible/urgent choice where appropriate.
+4. **Contact (Step 4 of 4):** name, company, email, phone, optional notes, and required privacy/consent acknowledgement if policy requires it.
+5. **Review & Submit (unnumbered):** explicit confirmation of the completed four-step request before submission.
 
-The form states are `editing`, `validating`, `submitting`, `success`, and `error`. Next is disabled only when the current step has invalid required data; validation errors appear inline after the relevant interaction/submit attempt. Back preserves values. Progress is textual (`Step 2 of 4`) as well as visual. Enter follows native form conventions without unexpectedly advancing a control choice. Errors receive focus and are announced with an `aria-live` region. Success offers reset/start-over and a clear next action. A recoverable error preserves all inputs and exposes `Try again`.
+The data-entry states are `editing` and `validating`; submission/result states are `submitting`, `success`, and `error`. The progress indicator is shown only for the four data-entry steps as `Step X of 4`. Review & Submit, success, and error are not numbered steps. Next is disabled only when the current step has invalid required data; validation errors appear inline after the relevant interaction/submit attempt. Back preserves values. Enter follows native form conventions without unexpectedly advancing a control choice. Errors receive focus and are announced with an `aria-live` region. Success offers reset/start-over and a clear next action. A recoverable error preserves all inputs and exposes `Try again`.
 
 ### UI-independent service boundary
 
@@ -474,6 +493,8 @@ Do not create micro-components for trivial markup. Use a small set of reusable p
 
 Marketing content lives in typed/structured collections rather than scattered JSX: navigation, solutions, industries, case studies, resources, marquee items, contact/legal data, and media. `media` configuration maps stable asset keys to local/approved replacements and alt text. Remote placeholder URLs must not be embedded throughout components. All illustrative data is separately labeled/configured from editorial content.
 
+`externalDestinations` is a separate typed configuration layer. It validates/centralizes allowed external URLs and provides an explicit unavailable state for unconfigured links; no component fabricates a destination.
+
 ## 12. Accessibility requirements
 
 Target WCAG 2.2 AA.
@@ -499,6 +520,8 @@ Target WCAG 2.2 AA.
 | Images | Responsive sizes, modern formats, declared dimensions, below-fold lazy loading |
 | Fonts | One primary variable family where possible; subset/preload only critical files; `font-display: swap` or equivalent |
 | Animation | Transform/opacity preferred; no continuous layout/reflow loops |
+
+Without JavaScript, core marketing content must remain readable, essential contact information must remain available, and semantic navigation/routes must remain usable where technically possible; the page must not collapse into an empty shell. The interactive Quote Wizard may require JavaScript, but its section must present an accessible fallback contact/quote action rather than a broken or empty interface.
 
 Release is blocked by an avoidable horizontal overflow, flashing theme, nonfunctional no-JS/core fallback, inaccessible primary form flow, or performance regression caused by optional 3D/motion.
 
