@@ -12,5 +12,9 @@ const sources: Record<LogoVariant, string> = {
 
 export function Logo({ variant = 'light', size = 'wordmark' }: { variant?: LogoVariant; size?: 'wordmark' | 'mark' }) {
   const width = size === 'mark' ? 40 : 150;
-  return <Image alt="KAG Logistics" height={40} priority sizes={`${width}px`} src={sources[variant]} width={width} />;
+  if (size === 'mark' || variant !== 'light') {
+    return <Image alt="KAG Logistics" height={40} priority sizes={`${width}px`} src={sources[variant]} width={width} />;
+  }
+
+  return <span className="logo"><Image alt="KAG Logistics" className="logo-on-light" height={40} priority sizes={`${width}px`} src={sources.light} width={width} /><Image alt="KAG Logistics" className="logo-on-dark" height={40} priority sizes={`${width}px`} src={sources.dark} width={width} /></span>;
 }

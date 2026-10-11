@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Logo } from '@/components/ui/Logo';
 
 describe('Logo', () => {
-  it('uses the requested dark-background variant', () => {
-    render(<Logo variant="dark" />);
-
-    expect(screen.getByRole('img', { name: 'KAG Logistics' })).toHaveAttribute('src', '/logos/kag-dark.svg');
+  it('renders light and dark wordmark variants for CSS theme selection', () => {
+    const { container } = render(<Logo />);
+    expect(container.querySelectorAll('.logo-on-light[alt="KAG Logistics"]')).toHaveLength(1);
+    expect(container.querySelectorAll('.logo-on-dark[alt="KAG Logistics"]')).toHaveLength(1);
   });
 });
