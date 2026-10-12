@@ -492,7 +492,7 @@ Use the Native execution workflow’s fresh reviewer on the completed branch. Pr
 
 - [ ] **Step 5: Resolve review findings and re-verify when necessary**
 
-For every Critical or Important finding, add a focused regression test when applicable, implement the narrow fix, rerun the affected test plus all five final required commands, and request a follow-up review. Commit focused `fix:` changes. Do not change the approved specification to dismiss a finding.
+Re-grade the fresh review findings by actual user impact. Critical and Important findings enter one focused fix pass only: for each, write the regression test first and observe RED; implement the narrow fix and observe GREEN. Then run all five final required commands once after the complete fix pass. Record every ruling and any deferred Minor finding in the execution ledger and final report. Commit focused `fix:` changes. Do not change the approved specification to dismiss a finding, and do not dispatch or request a second whole-branch review after this fix pass.
 
 - [ ] **Step 6: Push, create the PR, report results, and stop before merge**
 
