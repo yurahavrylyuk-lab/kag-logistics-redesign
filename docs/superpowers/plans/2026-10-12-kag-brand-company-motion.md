@@ -26,7 +26,7 @@
 ## Review Focus
 
 1. **Configured external action:** Ship Now must be an actual accessible anchor to the verified HTTPS URL while Customer Login remains an intentional unavailable state; task 1 and task 3 add the unit/integration coverage.
-2. **No competing CTA state:** the floating Ship Now control must be absent before the hero has exited, enter after the threshold, and never hide a focused or bottom-of-page control; task 4 adds component and mobile end-to-end checks.
+2. **No competing CTA state:** the floating Ship Now control must use the homepage hero when available or the shared top-page sentinel everywhere else, remain absent before that sentinel exits, and suppress around marked/focused bottom interaction zones; task 4 adds component and multi-route mobile end-to-end checks.
 3. **Email regression:** traversing the four-step quote wizard must still prepare a `mailto:` draft for `delta.qoralis@gmail.com`; task 7 retains the existing quote end-to-end check in the Phase 1 gate.
 4. **Motion capability changes:** switching to reduced motion or a coarse pointer after load must suppress choreography/ambient behavior safely; task 8 adds media-query and observer lifecycle tests, task 11 covers browser behavior.
 5. **No-JavaScript route usability:** homepage and About content, normal navigation, header Ship Now link, and quote contact fallback must remain present with scripts disabled; task 11 extends Playwright no-JS coverage.
@@ -42,12 +42,13 @@
 | `content/navigation.ts` | Modify | Header-only primary collection and a footer/contextual collection that retains Resources. |
 | `content/destinations.ts` | Modify | Single verified `shipNow` URL configuration; leave unverified destinations unavailable. |
 | `components/ui/ShipNowLink.tsx` | Create | Reusable external Ship Now anchor, accessible name, optional compact presentation, and external navigation safety. |
-| `components/layout/SiteHeader.tsx`, `DesktopNavigation.tsx`, `MobileNavigation.tsx`, `SiteFooter.tsx` | Modify | Correct route hierarchy, logo variants, and desktop/mobile action placements. |
-| `components/layout/FloatingShipNow.tsx` | Create | Client-only IntersectionObserver enhancement that shows the persistent CTA after the hero threshold. |
+| `components/layout/SiteHeader.tsx`, `DesktopNavigation.tsx`, `MobileNavigation.tsx`, `SiteFooter.tsx` | Modify | Correct route hierarchy, logo variants, desktop/mobile action placements, and footer suppression marker. |
+| `components/layout/FloatingShipNow.tsx` | Create | Client-only IntersectionObserver enhancement that uses a homepage hero or shared top-page sentinel, plus marked suppression regions, to control the persistent CTA cross-site. |
 | `content/about.ts` | Create | Approved factual About copy and typed capability/industry data only. |
 | `app/about/page.tsx` | Create | Server-rendered About route and route metadata. |
 | `components/sections/AboutKag.tsx` | Create | Concise homepage company proof and `/about` route action. |
-| `app/page.tsx`, `app/layout.tsx`, `app/sitemap.ts` | Modify | Homepage placement, globally mounted progressive clients, and About sitemap entry. |
+| `app/page.tsx`, `app/layout.tsx`, `app/sitemap.ts`, `app/quote/page.tsx` | Modify | Homepage placement, shared top-page sentinel/progressive clients, About sitemap entry, and quote-page suppression marker. |
+| `components/sections/QuoteSection.tsx`, `FinalCTA.tsx` | Modify | Mark homepage quote/final conversion zones that must temporarily suppress the floating CTA. |
 | `features/motion/SectionChoreography.tsx` | Create | Small client observer that writes discrete section lifecycle data attributes. |
 | `features/motion/AmbientCursor.tsx` | Create | Fine-pointer-only, reduced-motion-aware `requestAnimationFrame` CSS-variable updater and non-interactive ambient layer. |
 | `app/globals.css` | Modify | Theme tokens, logo/header/floating CTA/About styling, choreography states, hover/focus families, and capability-specific responsive/reduced-motion rules. |
@@ -56,6 +57,7 @@
 | `tests/integration/AboutPage.test.tsx`, `FloatingShipNow.test.tsx`, `MotionEnhancements.test.tsx` | Create | About content/metadata, floating CTA observer state, and motion capability/lifecycle contracts. |
 | `tests/setup.ts` | Modify | Deterministic test helpers for `IntersectionObserver`, `matchMedia`, and animation-frame cleanup where the new component tests need them. |
 | `e2e/navigation.spec.ts`, `responsive.spec.ts`, `reduced-motion.spec.ts`, `no-js.spec.ts`, `accessibility.spec.ts` | Modify | Browser-level route, CTA URL/state, viewport, reduced-motion, no-JS, and axe checks. |
+| `e2e/floating-ship-now.spec.ts` | Create | Homepage, About, and Technology visibility/suppression/non-occlusion coverage for the persistent CTA. |
 
 ## Phase 1 — brand, navigation, Ship Now, and About
 
@@ -177,18 +179,23 @@ Expected: PASS.
 - Create: `components/layout/FloatingShipNow.tsx`
 - Modify: `components/sections/Hero.tsx`
 - Modify: `app/layout.tsx`
+- Modify: `app/quote/page.tsx`
+- Modify: `components/layout/SiteFooter.tsx`
+- Modify: `components/sections/QuoteSection.tsx`
+- Modify: `components/sections/FinalCTA.tsx`
 - Modify: `app/globals.css`
 - Modify: `tests/setup.ts`
 - Test: `tests/integration/FloatingShipNow.test.tsx`
+- Create: `e2e/floating-ship-now.spec.ts`
 - Modify: `e2e/responsive.spec.ts`
 
 **Interfaces:**
-- Consumes: `ShipNowLink`, hero sentinel `id="hero"`, `IntersectionObserver`, and `(prefers-reduced-motion: reduce)`.
-- Produces: `FloatingShipNow(): JSX.Element`, initially hidden and then rendered/visible only after the hero sentinel is no longer intersecting.
+- Consumes: `ShipNowLink`, optional homepage hero sentinel `id="hero"`, shared layout sentinel `id="floating-cta-top-sentinel"`, `[data-floating-cta-suppress]`, `IntersectionObserver`, and `(prefers-reduced-motion: reduce)`.
+- Produces: `FloatingShipNow(): JSX.Element`, initially hidden and then rendered/visible after the preferred opening sentinel is no longer intersecting unless a marked suppression region or focus within one is active.
 
 - [ ] **Step 1: Write observer-state tests and install only the required deterministic test double**
 
-In `FloatingShipNow.test.tsx`, mock `IntersectionObserver`, render the component with a hero sentinel, trigger an intersecting entry and assert no visible floating link, then trigger a non-intersecting entry and assert exactly one accessible `Ship now` link has the configured href. In `tests/setup.ts`, add a resettable observer helper only if the local test cannot safely define it.
+In `FloatingShipNow.test.tsx`, mock `IntersectionObserver` and render: (a) a homepage hero plus shared sentinel, and (b) only the shared sentinel. Assert the hero is preferred when present; an intersecting preferred sentinel keeps the action hidden; a non-intersecting preferred sentinel reveals exactly one accessible Ship Now link at the configured URL; a `[data-floating-cta-suppress]` observer entry hides it; leaving that region reveals it again; and unmount disconnects every observer. Add a focused-element case proving that focus inside a marked suppression region hides the action. In `tests/setup.ts`, add a resettable observer helper only if the local test cannot safely define it.
 
 - [ ] **Step 2: Run the floating-control test to verify it fails**
 
@@ -196,17 +203,17 @@ Run: `npm run test -- tests/integration/FloatingShipNow.test.tsx`
 
 Expected: FAIL because the client control has not been implemented.
 
-- [ ] **Step 3: Implement `FloatingShipNow` and mount it from the root layout**
+- [ ] **Step 3: Implement the universal `FloatingShipNow` visibility contract and mount its shared sentinel**
 
-Observe `#hero` after mount; retain a conservative hidden state if the sentinel is absent; disconnect on unmount. Use the shared link with an `aria-label` that distinguishes the persistent action without changing its visible `SHIP NOW` wording. Do not add a scroll event listener or a second hard-coded URL.
+Mount a visually inert shared top-page sentinel immediately after the opening header/top area in `app/layout.tsx`. In `FloatingShipNow`, observe `#hero` when the current route has one; otherwise observe `#floating-cta-top-sentinel`. Also observe every `[data-floating-cta-suppress]` region with a small active-region set and add minimal `focusin`/`focusout` handling for focus inside those marked regions. Visibility is `opening sentinel has exited AND no suppression region/focused suppression region is active`. Disconnect all observers and remove focus listeners on unmount. Use the shared link with an `aria-label` that distinguishes the persistent action without changing its visible `SHIP NOW` wording. Do not add a scroll event listener, a second hard-coded URL, or a general overlay manager.
 
 - [ ] **Step 4: Style safe desktop/mobile placement and verify it**
 
-Use a fixed lower-right desktop pill and a bottom-safe mobile position with `env(safe-area-inset-bottom)`. Use transform/opacity for entry, and disable that transition under reduced motion. Extend the responsive browser check to scroll past `#hero`, assert the action appears, is in viewport, and page width does not exceed viewport width.
+Add `data-floating-cta-suppress` to the footer, homepage quote section, homepage final CTA, and `/quote` main/quote-control region so the action never covers those controls. Use a fixed lower-right desktop pill and a bottom-safe mobile position with `env(safe-area-inset-bottom)`. Use transform/opacity for entry, and disable that transition under reduced motion. In `e2e/floating-ship-now.spec.ts`, scroll beyond the opening region on `/`, `/about`, and `/technology`; assert the same configured action appears. On `/`, `/quote`, and a mobile viewport, assert it hides while a marked suppression region is active and reappears after it leaves where further page content remains. Assert the action is in viewport when shown and does not overlap the active quote/form control.
 
 - [ ] **Step 5: Run the focused checks**
 
-Run: `npm run test -- tests/integration/FloatingShipNow.test.tsx && npm run test:e2e -- e2e/responsive.spec.ts`
+Run: `npm run test -- tests/integration/FloatingShipNow.test.tsx && npm run test:e2e -- e2e/floating-ship-now.spec.ts e2e/responsive.spec.ts`
 
 Expected: PASS.
 
@@ -442,7 +449,7 @@ Run: `npm run test -- tests/integration/MotionEnhancements.test.tsx && npm run t
 
 Expected: PASS.
 
-### Task 12: Verify and commit Phase 2, then stop at the pull-request approval gate
+### Task 12: Verify, whole-branch review, and create the PR without merging
 
 **Files:**
 - Modify only if verification exposes a Phase 2 defect: files owned by tasks 8–11.
@@ -450,7 +457,7 @@ Expected: PASS.
 
 **Interfaces:**
 - Consumes: completed Phase 1 baseline and Phase 2 progressive enhancements.
-- Produces: one or more verified Phase 2 commits; a branch ready to push and propose for PR review, but not merged.
+- Produces: one or more verified Phase 2 commits and a pull request targeting `main`, ready for merge approval but not merged.
 
 - [ ] **Step 1: Run final required commands**
 
@@ -479,9 +486,17 @@ git commit -m "feat: add KAG scroll interaction system"
 
 Use an additional `fix:` commit only if final verification identifies a focused defect. Do not amend the Phase 1 commit or the approved specification.
 
-- [ ] **Step 4: Push and stop before merge**
+- [ ] **Step 4: Run a fresh final whole-branch review**
 
-Push `feature/kag-brand-company-motion`, create a PR targeting `main` only when the user authorizes it, report the verification results and commit SHAs, and do not merge automatically.
+Use the Native execution workflow’s fresh reviewer on the completed branch. Provide the verified diff, required-command results, and the accessibility/no-JavaScript/mobile evidence. Treat Critical and Important findings as blocking.
+
+- [ ] **Step 5: Resolve review findings and re-verify when necessary**
+
+For every Critical or Important finding, add a focused regression test when applicable, implement the narrow fix, rerun the affected test plus all five final required commands, and request a follow-up review. Commit focused `fix:` changes. Do not change the approved specification to dismiss a finding.
+
+- [ ] **Step 6: Push, create the PR, report results, and stop before merge**
+
+Push `feature/kag-brand-company-motion`, create a PR targeting `main` without seeking another authorization, attach the PR to the task, and report the PR URL/number, target branch, final commit SHA, review outcome, and final verification results. Stop at the merge approval gate; never merge automatically.
 
 ## Commit boundaries
 
