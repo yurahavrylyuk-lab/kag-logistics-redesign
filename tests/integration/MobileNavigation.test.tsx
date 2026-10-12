@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { MobileNavigation } from '@/components/layout/MobileNavigation';
@@ -28,5 +28,13 @@ describe('MobileNavigation', () => {
     expect(close).toHaveFocus();
     await user.click(close);
     expect(screen.queryByRole('dialog', { name: 'Navigation menu' })).not.toBeInTheDocument();
+  });
+
+  it('keeps Resources out of the mobile primary menu and exposes Ship Now', async () => {
+    const user = userEvent.setup();
+    render(<ThemeProvider><MobileNavigation /></ThemeProvider>);
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }));
+    expect(screen.queryByRole('link', { name: 'Resources' })).not.toBeInTheDocument();
+    expect(within(screen.getByRole('dialog', { name: 'Navigation menu' })).getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
   });
 });

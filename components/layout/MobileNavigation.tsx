@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { primaryNavigation } from '@/content/navigation';
 import { ThemeToggle } from '@/features/theme/ThemeToggle';
+import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,12 +44,14 @@ export function MobileNavigation() {
   };
 
   return <div className="mobile-nav">
+    <ShipNowLink className="mobile-header-ship-now" />
     <button aria-controls="mobile-navigation" aria-expanded={isOpen} aria-label="Open navigation" onClick={() => setIsOpen(true)} ref={triggerRef} type="button">Menu</button>
     {isOpen ? <div aria-label="Navigation menu" aria-modal="true" className="mobile-drawer" id="mobile-navigation" onKeyDown={trapFocus} ref={drawerRef} role="dialog">
       <button aria-label="Close navigation" onClick={() => setIsOpen(false)} type="button">Close</button>
       <nav aria-label="Mobile navigation">
         {primaryNavigation.map((item) => <Link href={item.href} key={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
         <Link href="/quote" onClick={() => setIsOpen(false)}>Get a Quote</Link>
+        <ShipNowLink />
       </nav>
       <ThemeToggle />
     </div> : null}
