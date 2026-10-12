@@ -15,6 +15,8 @@ describe('SiteHeader', () => {
     render(<ThemeProvider><SiteHeader /></ThemeProvider>);
     expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).toContain('About');
     expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).not.toContain('Resources');
-    expect(screen.getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
+    const shipNow = screen.getByRole('link', { name: /ship now/i });
+    expect(shipNow).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
+    expect(shipNow).toHaveClass('ship-now');
   });
 });

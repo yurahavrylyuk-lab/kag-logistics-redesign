@@ -12,4 +12,9 @@ describe('AboutPage', () => {
     expect(screen.getByRole('link', { name: 'Get a Quote' })).toHaveAttribute('href', '/quote');
     expect(screen.getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
   });
+
+  it('keeps its composition boundaries visible to progressive choreography without changing semantics', () => {
+    const { container } = render(<AboutPage />);
+    expect(container.querySelectorAll('main > section[data-choreography]')).toHaveLength(4);
+  });
 });
