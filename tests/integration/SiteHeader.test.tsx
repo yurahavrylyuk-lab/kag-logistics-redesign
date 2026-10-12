@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { ThemeProvider } from '@/features/theme/ThemeProvider';
@@ -15,7 +15,7 @@ describe('SiteHeader', () => {
     render(<ThemeProvider><SiteHeader /></ThemeProvider>);
     expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).toContain('About');
     expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).not.toContain('Resources');
-    const shipNow = screen.getByRole('link', { name: /ship now/i });
+    const shipNow = within(document.querySelector('.header-actions')!).getByRole('link', { name: /ship now/i });
     expect(shipNow).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
     expect(shipNow).toHaveClass('ship-now');
   });

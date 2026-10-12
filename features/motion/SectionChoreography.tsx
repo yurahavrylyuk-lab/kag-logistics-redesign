@@ -1,28 +1,42 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export function SectionChoreography() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const sections = [...document.querySelectorAll<HTMLElement>('[data-choreography]')];
-    sections.forEach((section) => section.setAttribute('data-choreography-state', 'static'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let observer: IntersectionObserver | undefined;
+    const reset = () => sections.forEach((section) => section.setAttribute('data-choreography-state', 'static'));
+    const connect = () => {
+      observer?.disconnect();
+      reset();
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-      return undefined;
-    }
+      if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.setAttribute(
-          'data-choreography-state',
-          entry.isIntersecting ? 'centered' : entry.boundingClientRect.top > 0 ? 'entering' : 'exiting',
-        );
-      });
-    }, { rootMargin: '0px 0px -20% 0px', threshold: 0.35 });
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          entry.target.setAttribute(
+            'data-choreography-state',
+            entry.isIntersecting ? 'centered' : entry.boundingClientRect.top > 0 ? 'entering' : 'exiting',
+          );
+        });
+      }, { rootMargin: '0px 0px -20% 0px', threshold: 0.35 });
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+      sections.forEach((section) => observer?.observe(section));
+    };
+    const onPreferenceChange = () => connect();
+
+    connect();
+    reducedMotion.addEventListener('change', onPreferenceChange);
+    return () => {
+      observer?.disconnect();
+      reducedMotion.removeEventListener('change', onPreferenceChange);
+    };
+  }, [pathname]);
 
   return null;
 }

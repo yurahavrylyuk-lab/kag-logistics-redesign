@@ -23,3 +23,15 @@ test('mobile floating Ship Now stays within the viewport and never overlays quot
   await page.goto('/quote');
   await expect(page.getByRole('link', { name: 'Persistent Ship Now' })).toHaveCount(0);
 });
+
+test('landscape mobile navigation keeps its Ship Now action reachable', async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+
+  const shipNow = page.getByRole('dialog', { name: 'Navigation menu' }).getByRole('link', { name: 'Ship Now' });
+  await shipNow.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+  await expect(shipNow).toBeVisible();
+  const box = await shipNow.boundingBox();
+  expect((box?.y ?? Infinity) + (box?.height ?? Infinity)).toBeLessThanOrEqual(390);
+});

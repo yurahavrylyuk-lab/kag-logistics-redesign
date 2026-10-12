@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('disabling JavaScript leaves marketing content and a quote fallback available', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

@@ -37,3 +37,18 @@ test('About and the post-hero floating Ship Now state have no blocking accessibi
   const postHeroResults = await new AxeBuilder({ page }).analyze();
   expect(postHeroResults.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? ''))).toEqual([]);
 });
+
+test('About KAG contrast remains accessible in both themes', async ({ page }) => {
+  for (const theme of ['light', 'dark'] as const) {
+    await page.goto('/');
+    await page.getByLabel('Color theme').selectOption(theme);
+    const results = await new AxeBuilder({ page }).include('.about-kag').withRules(['color-contrast']).analyze();
+    expect(results.violations).toEqual([]);
+  }
+});
+
+test('About KAG uses an opaque surface behind its contrast-critical copy', async ({ page }) => {
+  await page.goto('/');
+  const background = await page.locator('.about-kag').evaluate((element) => getComputedStyle(element).backgroundColor);
+  expect(background).not.toBe('rgba(0, 0, 0, 0)');
+});

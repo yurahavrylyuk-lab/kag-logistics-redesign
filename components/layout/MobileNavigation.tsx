@@ -44,6 +44,7 @@ export function MobileNavigation() {
   };
 
   return <div className="mobile-nav">
+    <ShipNowLink className="mobile-header-ship-now" />
     <button aria-controls="mobile-navigation" aria-expanded={isOpen} aria-label="Open navigation" onClick={() => setIsOpen(true)} ref={triggerRef} type="button">Menu</button>
     {isOpen ? <div aria-label="Navigation menu" aria-modal="true" className="mobile-drawer" id="mobile-navigation" onKeyDown={trapFocus} ref={drawerRef} role="dialog">
       <button aria-label="Close navigation" onClick={() => setIsOpen(false)} type="button">Close</button>

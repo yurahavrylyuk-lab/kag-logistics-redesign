@@ -1,10 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function FloatingShipNow() {
-  const [visible, setVisible] = useState(false);
+  const [visibleOnPath, setVisibleOnPath] = useState<string | null>(null);
+  const pathname = usePathname();
+  const pathKey = pathname ?? '';
+  const visible = visibleOnPath === pathKey;
 
   useEffect(() => {
     const target = document.getElementById('hero') ?? document.getElementById('floating-cta-top-sentinel');
@@ -13,7 +17,7 @@ export function FloatingShipNow() {
     let pastTop = false;
     let focusedSuppression = false;
     const activeSuppressions = new Set<Element>();
-    const update = () => setVisible(pastTop && activeSuppressions.size === 0 && !focusedSuppression);
+    const update = () => setVisibleOnPath(pastTop && activeSuppressions.size === 0 && !focusedSuppression ? pathKey : null);
     const topObserver = new IntersectionObserver(([entry]) => {
       pastTop = !entry.isIntersecting;
       update();
@@ -42,7 +46,7 @@ export function FloatingShipNow() {
       document.removeEventListener('focusin', onFocusIn);
       document.removeEventListener('focusout', onFocusOut);
     };
-  }, []);
+  }, [pathKey]);
 
   return <div className="floating-ship-now" data-visible={visible}>{visible ? <ShipNowLink persistent /> : null}</div>;
 }

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { MobileNavigation } from '@/components/layout/MobileNavigation';
@@ -35,6 +35,6 @@ describe('MobileNavigation', () => {
     render(<ThemeProvider><MobileNavigation /></ThemeProvider>);
     await user.click(screen.getByRole('button', { name: 'Open navigation' }));
     expect(screen.queryByRole('link', { name: 'Resources' })).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
+    expect(within(screen.getByRole('dialog', { name: 'Navigation menu' })).getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
   });
 });

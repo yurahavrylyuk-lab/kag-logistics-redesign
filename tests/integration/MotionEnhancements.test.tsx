@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { AmbientCursor } from '@/features/motion/AmbientCursor';
 import { SectionChoreography } from '@/features/motion/SectionChoreography';
@@ -31,6 +31,25 @@ describe('progressive motion enhancements', () => {
 
     expect(observers).toHaveLength(0);
     expect(addEventListener).not.toHaveBeenCalledWith('pointermove', expect.any(Function), expect.anything());
+  });
+
+  it('resets observed sections and disconnects when reduced motion is enabled after mount', () => {
+    const listeners = new Set<(event: MediaQueryListEvent) => void>();
+    vi.stubGlobal('matchMedia', vi.fn().mockImplementation(() => ({
+      matches: false,
+      addEventListener: (_event: string, listener: (event: MediaQueryListEvent) => void) => listeners.add(listener),
+      removeEventListener: (_event: string, listener: (event: MediaQueryListEvent) => void) => listeners.delete(listener),
+    })));
+    const observers = installIntersectionObserverMock();
+    const { getByTestId } = render(<><section data-choreography data-testid="section" /><SectionChoreography /></>);
+    const section = getByTestId('section');
+
+    act(() => observers[0].callback([{ target: section, isIntersecting: true } as unknown as IntersectionObserverEntry], {} as IntersectionObserver));
+    expect(section).toHaveAttribute('data-choreography-state', 'centered');
+
+    act(() => listeners.forEach((listener) => listener({ matches: true } as MediaQueryListEvent)));
+    expect(observers[0].disconnect).toHaveBeenCalledOnce();
+    expect(section).toHaveAttribute('data-choreography-state', 'static');
   });
 
   it('does not mount or start the cursor loop for a coarse pointer', () => {
