@@ -10,4 +10,11 @@ describe('SiteHeader', () => {
     expect(screen.queryByRole('link', { name: 'Customer Login' })).not.toBeInTheDocument();
     expect(screen.getByText('Customer Login is not configured for this prototype.')).toBeInTheDocument();
   });
+
+  it('uses the approved primary navigation and configured Ship Now CTA', () => {
+    render(<ThemeProvider><SiteHeader /></ThemeProvider>);
+    expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).toContain('About');
+    expect(screen.getByRole('navigation', { name: 'Primary navigation' }).textContent).not.toContain('Resources');
+    expect(screen.getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
+  });
 });

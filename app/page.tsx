@@ -11,7 +11,8 @@ import { CareersCTA } from '@/components/sections/CareersCTA';
 import { Resources } from '@/components/sections/Resources';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { QuoteSection } from '@/components/sections/QuoteSection';
+import { AboutKag } from '@/components/sections/AboutKag';
 
 export default function HomePage() {
-  return <main id="main-content"><Hero /><Ticker items={['24/7 Operations', 'North American Coverage', 'Multimodal Transportation', 'Dedicated Logistics Experts']} /><ProblemCards /><SolutionsGrid /><TechnologyShowcase /><IndustrySelector /><Ticker items={['Brokerage', 'Dedicated', 'Bulk', 'Drayage', 'Expedited', 'Cross-border']} /><CaseStudyCards /><ProcessTimeline /><QuoteSection /><CarrierCTA /><CareersCTA /><Resources /><FinalCTA /></main>;
+  return <main id="main-content"><Hero /><Ticker items={['24/7 Operations', 'North American Coverage', 'Multimodal Transportation', 'Dedicated Logistics Experts']} /><ProblemCards /><SolutionsGrid /><AboutKag /><TechnologyShowcase /><IndustrySelector /><Ticker items={['Brokerage', 'Dedicated', 'Bulk', 'Drayage', 'Expedited', 'Cross-border']} /><CaseStudyCards /><ProcessTimeline /><QuoteSection /><CarrierCTA /><CareersCTA /><Resources /><FinalCTA /></main>;
 }

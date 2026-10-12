@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/features/theme/ThemeProvider';
 import { ThemeScript } from '@/features/theme/ThemeScript';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { FloatingShipNow } from '@/components/layout/FloatingShipNow';
 import { createPageMetadata } from '@/lib/metadata';
 import './globals.css';
 
@@ -16,7 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <ThemeScript />
         <meta content="#f5f5f2" name="theme-color" />
       </head>
-      <body><ThemeProvider><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader />{children}<SiteFooter /></ThemeProvider></body>
+      <body><ThemeProvider><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader /><div aria-hidden="true" id="floating-cta-top-sentinel" />{children}<FloatingShipNow /><SiteFooter /></ThemeProvider></body>
     </html>
   );
 }

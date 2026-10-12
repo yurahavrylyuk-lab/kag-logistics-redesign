@@ -122,6 +122,10 @@ body {
   border-color: var(--color-brand);
   color: #fff;
 }
+.ship-now { align-items:center; background:var(--foreground); border:1px solid var(--foreground); border-radius:var(--radius-md); color:var(--background); display:inline-flex; font-weight:800; gap:.4rem; justify-content:center; min-height:2.75rem; padding:.625rem 1rem; text-decoration:none; transition:transform var(--motion-control) var(--ease-standard), box-shadow var(--motion-control) var(--ease-standard); }
+.ship-now:hover { box-shadow:0 0 0 3px color-mix(in srgb, var(--color-brand) 30%, transparent); transform:translateY(-2px); }.ship-now:hover span { transform:translateX(3px); }.ship-now span{transition:transform var(--motion-fast) var(--ease-standard)}
+.floating-ship-now { bottom:var(--space-5); opacity:0; pointer-events:none; position:fixed; right:var(--space-5); transform:translateY(1rem); transition:opacity var(--motion-control),transform var(--motion-control); z-index:var(--z-raised); }.floating-ship-now[data-visible='true']{opacity:1;pointer-events:auto;transform:none}.floating-ship-now .ship-now{background:var(--color-brand);border-color:var(--color-brand);color:#fff}
+.about-kag { background:linear-gradient(120deg,var(--surface-inverse),var(--surface-elevated)); color:var(--background); }.about-kag p{max-width:48rem}.about-signals{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-5)}.about-signals strong{border:1px solid currentColor;border-radius:999px;padding:.5rem .75rem}
 
 .site-header, .site-footer {
   align-items: center;
@@ -148,6 +152,7 @@ body {
   .desktop-nav, .header-actions { display: none; }
   .mobile-nav { display: block; }
 }
+@media (max-width:640px){.floating-ship-now{bottom:calc(var(--space-4) + env(safe-area-inset-bottom));right:var(--space-4)}.mobile-drawer .ship-now{width:100%}}
 
 .hero { align-items: center; display: grid; gap: var(--space-7); grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); min-height: min(760px, calc(100vh - 80px)); padding: var(--space-10) var(--gutter); }
 .hero-copy { max-width: 43rem; }

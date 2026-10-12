@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { primaryNavigation } from '@/content/navigation';
 import { ThemeToggle } from '@/features/theme/ThemeToggle';
+import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +50,7 @@ export function MobileNavigation() {
       <nav aria-label="Mobile navigation">
         {primaryNavigation.map((item) => <Link href={item.href} key={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
         <Link href="/quote" onClick={() => setIsOpen(false)}>Get a Quote</Link>
+        <ShipNowLink />
       </nav>
       <ThemeToggle />
     </div> : null}

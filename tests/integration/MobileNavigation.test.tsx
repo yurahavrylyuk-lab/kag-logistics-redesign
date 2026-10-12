@@ -29,4 +29,12 @@ describe('MobileNavigation', () => {
     await user.click(close);
     expect(screen.queryByRole('dialog', { name: 'Navigation menu' })).not.toBeInTheDocument();
   });
+
+  it('keeps Resources out of the mobile primary menu and exposes Ship Now', async () => {
+    const user = userEvent.setup();
+    render(<ThemeProvider><MobileNavigation /></ThemeProvider>);
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }));
+    expect(screen.queryByRole('link', { name: 'Resources' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ship now/i })).toHaveAttribute('href', 'https://www.kaglogistics.com/ship-now-2/');
+  });
 });

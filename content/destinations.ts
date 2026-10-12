@@ -20,7 +20,7 @@ export const externalDestinations = {
     message: 'The job-search destination is not configured for this prototype.',
   },
   shipNow: {
-    kind: 'unavailable',
-    message: 'The urgent-shipping destination is not configured for this prototype.',
+    kind: 'url',
+    href: 'https://www.kaglogistics.com/ship-now-2/',
   },
 } satisfies Record<string, ExternalDestination>;
