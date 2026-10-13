@@ -30,6 +30,8 @@
 
 /* Preserve KAG rules while allowing consumer utility classes to override them. */
 @layer components {
+/* Optional KAG text-size overrides use a private namespace. Leave them
+   undefined to preserve each legacy fallback or inherited font size. */
 :root, [data-theme], .dark {
   --card: var(--surface);
   --card-foreground: var(--foreground);
@@ -267,7 +269,7 @@ body {
 
 .site-header { background: var(--background); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: var(--z-header); }
 .desktop-nav, .header-actions, .site-footer nav { display: flex; gap: var(--space-4); align-items: center; }
-.unavailable-action { display: grid; gap: var(--space-1); max-width: 24rem; }.unavailable-message { color: var(--muted); font-size: var(--text-sm); }
+.unavailable-action { display: grid; gap: var(--space-1); max-width: 24rem; }.unavailable-message { color: var(--muted); font-size: var(--kag-text-sm); }
 .site-footer nav { flex-wrap: wrap; max-width: 100%; }
 .desktop-nav a { color: var(--foreground); text-decoration: none; }
 .site-footer a { color: var(--background); text-decoration: none; }
@@ -288,9 +290,9 @@ body {
 
 .hero { align-items: center; display: grid; gap: var(--space-7); grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); min-height: min(760px, calc(100vh - 80px)); padding: var(--space-10) var(--gutter); }
 .hero-copy { max-width: 43rem; }
-.eyebrow { color: var(--color-brand-strong); font-size: var(--text-sm, .875rem); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.eyebrow { color: var(--color-brand-strong); font-size: var(--kag-text-sm, .875rem); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .hero h1 { font-size: clamp(3rem, 6.5vw, 6.5rem); letter-spacing: -.06em; line-height: .94; margin: var(--space-4) 0; }
-.hero-copy > p:not(.eyebrow) { color: var(--muted); font-size: var(--text-lg, 1.25rem); line-height: 1.5; }
+.hero-copy > p:not(.eyebrow) { color: var(--muted); font-size: var(--kag-text-lg, 1.25rem); line-height: 1.5; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 .logistics-scene { display: block; max-width: 100%; overflow: visible; }
 .scene-ground { fill: var(--surface-elevated); }
@@ -314,10 +316,10 @@ body {
 .quote-wizard, .quote-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); margin-top: var(--space-5); max-width: 52rem; padding: var(--space-5); }
 .quote-fallback { background: var(--surface-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); margin-top: var(--space-4); max-width: 52rem; padding: var(--space-4); }
 html[data-quote-ready='true'] .quote-fallback { display: none; }
-.quote-wizard fieldset { border: 0; display: grid; gap: var(--space-3); margin: var(--space-4) 0; padding: 0; }.quote-wizard legend { font-size: var(--text-lg); font-weight: 700; }.quote-wizard label { display: grid; font-weight: 600; gap: var(--space-2); }.quote-wizard input, .quote-wizard select, .quote-wizard textarea { background: var(--background); border: 1px solid var(--border); border-radius: .25rem; color: inherit; font: inherit; min-height: 2.75rem; padding: .5rem .625rem; }.quote-wizard textarea { min-height: 6rem; resize: vertical; }.form-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }.freight-options { display: flex; flex-wrap: wrap; gap: var(--space-2); }.freight-options button[aria-pressed='true'] { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }.checkbox-label { align-items: center; display: flex !important; font-weight: 400 !important; }.checkbox-label input { min-height: auto; width: 1rem; }.form-error { color: var(--color-danger); font-weight: 600; }.wizard-actions { display: flex; gap: var(--space-3); justify-content: flex-end; }.wizard-actions button, .quote-result button, .freight-options button { background: transparent; border: 1px solid var(--border); border-radius: var(--radius-md); color: inherit; font: inherit; min-height: 2.75rem; padding: .625rem 1rem; }.wizard-actions button:last-child, .quote-result button { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }
+.quote-wizard fieldset { border: 0; display: grid; gap: var(--space-3); margin: var(--space-4) 0; padding: 0; }.quote-wizard legend { font-size: var(--kag-text-lg); font-weight: 700; }.quote-wizard label { display: grid; font-weight: 600; gap: var(--space-2); }.quote-wizard input, .quote-wizard select, .quote-wizard textarea { background: var(--background); border: 1px solid var(--border); border-radius: .25rem; color: inherit; font: inherit; min-height: 2.75rem; padding: .5rem .625rem; }.quote-wizard textarea { min-height: 6rem; resize: vertical; }.form-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }.freight-options { display: flex; flex-wrap: wrap; gap: var(--space-2); }.freight-options button[aria-pressed='true'] { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }.checkbox-label { align-items: center; display: flex !important; font-weight: 400 !important; }.checkbox-label input { min-height: auto; width: 1rem; }.form-error { color: var(--color-danger); font-weight: 600; }.wizard-actions { display: flex; gap: var(--space-3); justify-content: flex-end; }.wizard-actions button, .quote-result button, .freight-options button { background: transparent; border: 1px solid var(--border); border-radius: var(--radius-md); color: inherit; font: inherit; min-height: 2.75rem; padding: .625rem 1rem; }.wizard-actions button:last-child, .quote-result button { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; }.wizard-actions { justify-content: stretch; }.wizard-actions button { flex: 1; } }
 
-.hub-hero, .detail-hero { background: linear-gradient(120deg, var(--surface-elevated), var(--background)); min-height: 28rem; padding-top: var(--space-10); }.hub-hero h1, .detail-hero h1 { font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.06em; line-height: .94; margin: var(--space-4) 0; max-width: 14ch; }.hub-hero-copy, .detail-hero > p:not(.eyebrow) { color: var(--muted); font-size: var(--text-lg); line-height: 1.5; max-width: 44rem; }.hub-hero-copy .button { margin-top: var(--space-5); }.capability-list { display: grid; gap: var(--space-3); list-style: none; margin: var(--space-5) 0; padding: 0; }.capability-list li { border-bottom: 1px solid var(--border); font-size: var(--text-lg); padding-bottom: var(--space-3); }.capability-list li::before { color: var(--color-brand); content: '—'; margin-right: var(--space-3); }.hub-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }.hub-actions > span, .hub-hero-copy > span { border: 1px solid var(--border); border-radius: var(--radius-md); padding: .75rem 1rem; }.detail-body { max-width: 56rem; }.careers-story { background: var(--surface-elevated); }
+.hub-hero, .detail-hero { background: linear-gradient(120deg, var(--surface-elevated), var(--background)); min-height: 28rem; padding-top: var(--space-10); }.hub-hero h1, .detail-hero h1 { font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.06em; line-height: .94; margin: var(--space-4) 0; max-width: 14ch; }.hub-hero-copy, .detail-hero > p:not(.eyebrow) { color: var(--muted); font-size: var(--kag-text-lg); line-height: 1.5; max-width: 44rem; }.hub-hero-copy .button { margin-top: var(--space-5); }.capability-list { display: grid; gap: var(--space-3); list-style: none; margin: var(--space-5) 0; padding: 0; }.capability-list li { border-bottom: 1px solid var(--border); font-size: var(--kag-text-lg); padding-bottom: var(--space-3); }.capability-list li::before { color: var(--color-brand); content: '—'; margin-right: var(--space-3); }.hub-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }.hub-actions > span, .hub-hero-copy > span { border: 1px solid var(--border); border-radius: var(--radius-md); padding: .75rem 1rem; }.detail-body { max-width: 56rem; }.careers-story { background: var(--surface-elevated); }
 .final-cta .eyebrow { color: #ff9b85; }
 [data-theme='dark'] .final-cta .eyebrow { color: #9f2918; }
 
