@@ -1,3 +1,4 @@
+import { RouteMain } from '@/app/RouteMain';
 import { Link } from '@tanstack/react-router';
 import type { RouteContent, RouteSection } from '@/lib/route-content';
 import { CapabilityList } from './CapabilityList';
@@ -13,7 +14,7 @@ export function DetailPageTemplate({ content, section }: DetailPageTemplateProps
   const eyebrow = 'eyebrow' in content ? content.eyebrow : 'KAG Logistics prototype';
 
   return (
-    <main id="main-content">
+    <RouteMain id="main-content">
       {section === 'solutions' ? <RouteAnalytics event="solution_viewed" properties={{ solutionId: content.slug, source: 'detail-page' }} /> : null}
       <section className="detail-hero content-section">
         <p className="eyebrow">{eyebrow}</p>
@@ -28,6 +29,6 @@ export function DetailPageTemplate({ content, section }: DetailPageTemplateProps
         {capabilities.length > 0 ? <CapabilityList items={capabilities} /> : null}
         <Link className="text-link" to={section === 'resources' ? '/technology' : '/quote'}>{section === 'resources' ? 'Explore Technology' : 'Start a shipment conversation'} →</Link>
       </section>
-    </main>
+    </RouteMain>
   );
 }

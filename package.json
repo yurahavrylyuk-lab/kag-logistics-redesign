@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node --import tsx scripts/prerender.tsx",
     "preview": "vite preview",
     "start": "vite preview",
     "lint": "eslint .",

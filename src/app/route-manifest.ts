@@ -33,6 +33,7 @@ export const staticRouteManifest: StaticRoute[] = [
 ];
 
 export function getRouteMeta(path: string): PageMetadata {
-  return staticRouteManifest.find(route => route.path === path)?.metadata
+  const routePath = path.replace(/\/+$/, '') || '/';
+  return staticRouteManifest.find(route => route.path === routePath)?.metadata
     ?? createPageMetadata({ title: 'Page not found', description: 'The requested page could not be found.', path });
 }

@@ -4,9 +4,8 @@ import { AppProviders } from '@/app/providers';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { FloatingShipNow } from '@/components/layout/FloatingShipNow';
-import { SectionChoreography } from '@/features/motion/SectionChoreography';
 import { AmbientCursor } from '@/features/motion/AmbientCursor';
-import '@/styles/globals.css';
+import { RouteHead } from '@/app/RouteHead';
 
 export const Route = createRootRoute({
   component: AppShell,
@@ -15,11 +14,11 @@ export const Route = createRootRoute({
 
 export function AppShell() {
   return <AppProviders>
+    <RouteHead />
     <a className="skip-link" href="#main-content">Skip to content</a>
     <SiteHeader />
     <div aria-hidden="true" id="floating-cta-top-sentinel" />
     <Outlet />
-    <SectionChoreography />
     <AmbientCursor />
     <FloatingShipNow />
     <SiteFooter />

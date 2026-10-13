@@ -1,3 +1,4 @@
+import { RouteMain } from '@/app/RouteMain';
 import { createFileRoute } from '@tanstack/react-router';
 import { CapabilityList } from '@/components/sections/CapabilityList';
 import { CommandCenterDemo } from '@/components/sections/CommandCenterDemo';
@@ -6,7 +7,7 @@ import { technologyCapabilities, technologySummary } from '@/content/technology'
 
 
 function TechnologyPage() {
-  return <main id="main-content">
+  return <RouteMain id="main-content">
     <HubHero eyebrow="Technology" title="Operational control at human scale">
       <p>{technologySummary}</p>
       <a className="button button-primary" href="#capabilities">Explore capabilities</a>
@@ -15,7 +16,7 @@ function TechnologyPage() {
       <div><p className="eyebrow">Command Center</p><h2>Signal over noise</h2><p>Technology is framed here as operational proof: a clearer picture for the people planning, moving, and resolving freight.</p><CapabilityList items={technologyCapabilities} /></div>
       <CommandCenterDemo />
     </section>
-  </main>;
+  </RouteMain>;
 }
 
 export const Route = createFileRoute('/technology')({ component: TechnologyPage });

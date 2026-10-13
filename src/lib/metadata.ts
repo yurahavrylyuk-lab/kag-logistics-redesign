@@ -13,12 +13,23 @@ type PageMetadataInput = {
   path: string;
 };
 
+export function normalizeSiteOrigin(value?: string) {
+  if (!value?.trim()) return undefined;
+  const url = new URL(value.trim());
+  if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) {
+    throw new Error('VITE_SITE_URL must be an HTTP(S) site origin without credentials');
+  }
+  return url.origin;
+}
+
 export function configuredSiteOrigin() {
-  return import.meta.env.VITE_SITE_URL?.replace(/\/$/, '');
+  return normalizeSiteOrigin(import.meta.env?.VITE_SITE_URL
+    ?? (typeof process === 'undefined' ? undefined : process.env.VITE_SITE_URL));
 }
 
 export function createPageMetadata({ title, description, path }: PageMetadataInput, origin = configuredSiteOrigin()): PageMetadata {
-  const canonical = origin ? `${origin.replace(/\/$/, '')}${path}` : undefined;
+  const normalizedOrigin = normalizeSiteOrigin(origin);
+  const canonical = normalizedOrigin ? `${normalizedOrigin}${path}` : undefined;
   const pageTitle = `${title} | KAG Logistics`;
   return {
     title: pageTitle,
