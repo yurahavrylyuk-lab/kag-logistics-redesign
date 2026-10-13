@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
       routeFileIgnorePattern: '^\\$404\\.tsx$',
     }),
     react(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {

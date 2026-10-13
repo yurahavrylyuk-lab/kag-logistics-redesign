@@ -31,6 +31,7 @@
     "tests/setup.ts",
     "tests/test-router.tsx",
     "tests/integration/router-contract.test.tsx",
+    "tests/integration/shadcn-primitives.test.tsx",
     "vite.config.ts",
     "vitest.config.ts",
     "playwright.config.ts"
