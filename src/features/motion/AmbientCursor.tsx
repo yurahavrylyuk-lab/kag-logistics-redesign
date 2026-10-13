@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 
 function supportsAmbientCursor() {
@@ -46,6 +44,7 @@ export function AmbientCursor() {
     window.addEventListener('pointermove', move, { passive: true });
     return () => {
       if (frame.current !== null) window.cancelAnimationFrame(frame.current);
+      frame.current = null;
       window.removeEventListener('pointermove', move);
     };
   }, [enabled]);

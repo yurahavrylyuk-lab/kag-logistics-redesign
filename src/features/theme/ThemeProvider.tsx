@@ -1,5 +1,3 @@
-'use client';
-
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { resolveTheme } from './resolve-theme';
 import { readThemePreference, writeThemePreference } from './theme-storage';
@@ -27,29 +25,40 @@ function applyTheme(theme: ResolvedTheme) {
 }
 
 export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [preference, setPreferenceState] = useState<ThemePreference>(readThemePreference);
-  const [systemDark, setSystemDark] = useState(() => (
-    typeof window !== 'undefined' && getMediaQuery().matches
-  ));
+  const [state, setState] = useState<{
+    preference: ThemePreference;
+    systemDark: boolean;
+    ready: boolean;
+  }>({ preference: 'system', systemDark: false, ready: false });
+  const { preference, systemDark, ready } = state;
   const resolvedTheme = resolveTheme(preference, systemDark);
 
   useEffect(() => {
-    applyTheme(resolvedTheme);
-  }, [resolvedTheme]);
+    const savedPreference = readThemePreference();
+    const currentSystemDark = getMediaQuery().matches;
+    applyTheme(resolveTheme(savedPreference, currentSystemDark));
+    // This snapshot comes from browser APIs and must be read after static rendering.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setState({ preference: savedPreference, systemDark: currentSystemDark, ready: true });
+  }, []);
 
   useEffect(() => {
-    if (preference !== 'system') {
+    if (ready) applyTheme(resolvedTheme);
+  }, [ready, resolvedTheme]);
+
+  useEffect(() => {
+    if (!ready || preference !== 'system') {
       return undefined;
     }
 
     const mediaQuery = getMediaQuery();
     const handleChange = (event: MediaQueryListEvent) => {
-      setSystemDark(event.matches);
+      setState((current) => ({ ...current, systemDark: event.matches }));
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [preference]);
+  }, [preference, ready]);
 
   const value = useMemo<ThemeContextValue>(() => ({
     preference,
@@ -57,12 +66,10 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
     setPreference: (nextPreference) => {
       writeThemePreference(nextPreference);
       track('theme_changed', { theme: nextPreference, source: 'theme-toggle' });
-      if (nextPreference === 'system') {
-        setSystemDark(getMediaQuery().matches);
-      }
-      setPreferenceState(nextPreference);
+      const currentSystemDark = nextPreference === 'system' ? getMediaQuery().matches : systemDark;
+      setState({ preference: nextPreference, systemDark: currentSystemDark, ready: true });
     },
-  }), [preference, resolvedTheme]);
+  }), [preference, resolvedTheme, systemDark]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

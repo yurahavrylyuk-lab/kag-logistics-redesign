@@ -1,10 +1,8 @@
-'use client';
-
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useCurrentPathname } from '@/app/use-current-pathname';
 
 export function SectionChoreography() {
-  const pathname = usePathname();
+  const pathname = useCurrentPathname();
 
   useEffect(() => {
     const sections = [...document.querySelectorAll<HTMLElement>('[data-choreography]')];
