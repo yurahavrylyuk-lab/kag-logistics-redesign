@@ -1,7 +1,20 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import nextVitals from 'eslint-config-next/core-web-vitals';
+import js from '@eslint/js';
+import reactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  ...nextVitals,
-  globalIgnores(['.next/**', 'node_modules/**', 'coverage/**', 'playwright-report/**']),
+  globalIgnores(['.next/**', '.tanstack/**', 'dist/**', 'node_modules/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'src/routeTree.gen.ts']),
+  {
+    files: ['**/*.{js,mjs,ts,tsx}'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    extends: [reactHooks.configs.flat.recommended],
+  },
 ]);

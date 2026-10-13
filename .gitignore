@@ -3,6 +3,8 @@
 .superpowers/
 node_modules/
 .next/
+dist/
+.tanstack/
 coverage/
 playwright-report/
 test-results/
