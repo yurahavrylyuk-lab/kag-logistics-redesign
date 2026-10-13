@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
-import { useCurrentPathname } from '@/app/use-current-pathname';
+import { useMatch } from '@tanstack/react-router';
 import type { AnalyticsEventName } from './types';
 import { track } from './track';
 
 export function RouteAnalytics({ event, properties }: { event: AnalyticsEventName; properties: Record<string, unknown> }) {
-  const pathname = useCurrentPathname();
-  useEffect(() => { track(event, properties); }, [event, properties, pathname]);
+  // A page mounts before the shell's resolvedLocation acknowledgement. Its own
+  // match identifies that mount without firing again when acknowledgement lands.
+  const pathname = useMatch({ strict: false, shouldThrow: false, select: (match) => match.pathname });
+  useEffect(() => {
+    if (pathname !== undefined) track(event, properties);
+  }, [event, properties, pathname]);
   return null;
 }
