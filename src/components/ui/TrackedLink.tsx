@@ -1,12 +1,14 @@
 'use client';
 
-import { InternalLink } from '@/components/ui/InternalLink';
-import type { ComponentProps } from 'react';
+import { createLink } from '@tanstack/react-router';
+import { forwardRef, type ComponentProps } from 'react';
 import type { AnalyticsEventName } from '@/features/analytics/types';
 import { track } from '@/features/analytics/track';
 
-type TrackedLinkProps = ComponentProps<typeof InternalLink> & { event: AnalyticsEventName; properties: Record<string, unknown> };
+type TrackedAnchorProps = ComponentProps<'a'> & { event: AnalyticsEventName; properties: Record<string, unknown> };
 
-export function TrackedLink({ event, onClick, properties, ...props }: TrackedLinkProps) {
-  return <InternalLink {...props} onClick={(click) => { track(event, properties); onClick?.(click); }} />;
-}
+const TrackedAnchor = forwardRef<HTMLAnchorElement, TrackedAnchorProps>(function TrackedAnchor({ event, onClick, properties, ...props }, ref) {
+  return <a {...props} ref={ref} onClick={(click) => { track(event, properties); onClick?.(click); }} />;
+});
+
+export const TrackedLink = createLink(TrackedAnchor);

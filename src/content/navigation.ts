@@ -1,9 +1,10 @@
+import type { LinkProps } from '@tanstack/react-router';
 import type { ExternalDestination } from './destinations';
 import { externalDestinations } from './destinations';
 
 export type NavigationItem = {
   label: string;
-  href: string;
+  href: NonNullable<LinkProps['to']>;
 };
 
 export const primaryNavigation: NavigationItem[] = [

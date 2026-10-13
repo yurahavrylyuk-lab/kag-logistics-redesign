@@ -1,12 +1,11 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { CapabilityList } from '@/components/sections/CapabilityList';
 import { CommandCenterDemo } from '@/components/sections/CommandCenterDemo';
 import { HubHero } from '@/components/sections/HubHero';
 import { technologyCapabilities, technologySummary } from '@/content/technology';
-import { createPageMetadata } from '@/lib/metadata';
 
-export const metadata = createPageMetadata({ title: 'Technology', description: 'Operational technology capabilities for logistics coordination and visibility.', path: '/technology' });
 
-export default function TechnologyPage() {
+function TechnologyPage() {
   return <main id="main-content">
     <HubHero eyebrow="Technology" title="Operational control at human scale">
       <p>{technologySummary}</p>
@@ -18,3 +17,5 @@ export default function TechnologyPage() {
     </section>
   </main>;
 }
+
+export const Route = createFileRoute('/technology')({ component: TechnologyPage });

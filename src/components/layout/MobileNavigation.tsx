@@ -1,6 +1,6 @@
 'use client';
 
-import { InternalLink } from '@/components/ui/InternalLink';
+import { Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { primaryNavigation } from '@/content/navigation';
 import { ThemeToggle } from '@/features/theme/ThemeToggle';
@@ -49,8 +49,8 @@ export function MobileNavigation() {
     {isOpen ? <div aria-label="Navigation menu" aria-modal="true" className="mobile-drawer" id="mobile-navigation" onKeyDown={trapFocus} ref={drawerRef} role="dialog">
       <button aria-label="Close navigation" onClick={() => setIsOpen(false)} type="button">Close</button>
       <nav aria-label="Mobile navigation">
-        {primaryNavigation.map((item) => <InternalLink to={item.href} key={item.href} onClick={() => setIsOpen(false)}>{item.label}</InternalLink>)}
-        <InternalLink to="/quote" onClick={() => setIsOpen(false)}>Get a Quote</InternalLink>
+        {primaryNavigation.map((item) => <Link to={item.href} key={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
+        <Link to="/quote" onClick={() => setIsOpen(false)}>Get a Quote</Link>
         <ShipNowLink />
       </nav>
       <ThemeToggle />

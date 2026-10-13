@@ -1,0 +1,7 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { aboutCapabilities, aboutIndustries, aboutSummary } from '@/content/about';
+import { ShipNowLink } from '@/components/ui/ShipNowLink';
+
+function AboutPage() { return <main id="main-content"><section className="hub-hero content-section" data-choreography><p className="eyebrow">About KAG Logistics</p><h1>Built to keep complex supply chains moving.</h1><p>{aboutSummary}</p></section><section className="content-section" data-choreography><h2>Operational expertise with a North American view.</h2><p>Headquartered in North Canton, Ohio, KAG Logistics is a wholly owned subsidiary of Kenan Advantage Group, Inc. We combine experienced teams, business processes, and logistics technology with dedicated operational support.</p><div className="card-grid">{aboutCapabilities.map((item) => <article className="card" key={item}><h3>{item}</h3></article>)}</div></section><section className="content-section" data-choreography><h2>Industries served</h2><div className="about-signals">{aboutIndustries.map((item) => <strong key={item}>{item}</strong>)}</div></section><section className="content-section" data-choreography><h2>People + Network + Technology</h2><p>One coordinated operating model for planning, execution, capacity, and disruption response.</p><div className="hero-actions"><Link className="button button-primary" to="/quote">Get a Quote</Link><ShipNowLink /></div></section></main>; }
+
+export const Route = createFileRoute('/about')({ component: AboutPage });

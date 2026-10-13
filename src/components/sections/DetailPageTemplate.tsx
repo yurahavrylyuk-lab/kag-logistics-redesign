@@ -1,4 +1,4 @@
-import { InternalLink } from '@/components/ui/InternalLink';
+import { Link } from '@tanstack/react-router';
 import type { RouteContent, RouteSection } from '@/lib/route-content';
 import { CapabilityList } from './CapabilityList';
 import { RouteAnalytics } from '@/features/analytics/RouteAnalytics';
@@ -19,14 +19,14 @@ export function DetailPageTemplate({ content, section }: DetailPageTemplateProps
         <p className="eyebrow">{eyebrow}</p>
         <h1>{content.title}</h1>
         <p>{content.summary}</p>
-        <InternalLink className="button button-primary" to="/quote">Request pricing</InternalLink>
+        <Link className="button button-primary" to="/quote">Request pricing</Link>
       </section>
       <section className="content-section detail-body">
         <p className="eyebrow">Designed to explore</p>
         <h2>A focused prototype detail pattern</h2>
         {'category' in content ? <p>{content.category}. This representative page is a structured content pattern, not a published case study or editorial claim.</p> : <p>This representative page is designed to route visitors into a focused conversation about operational needs.</p>}
         {capabilities.length > 0 ? <CapabilityList items={capabilities} /> : null}
-        <InternalLink className="text-link" to={section === 'resources' ? '/technology' : '/quote'}>{section === 'resources' ? 'Explore Technology' : 'Start a shipment conversation'} →</InternalLink>
+        <Link className="text-link" to={section === 'resources' ? '/technology' : '/quote'}>{section === 'resources' ? 'Explore Technology' : 'Start a shipment conversation'} →</Link>
       </section>
     </main>
   );

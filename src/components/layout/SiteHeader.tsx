@@ -1,4 +1,4 @@
-import { InternalLink } from '@/components/ui/InternalLink';
+import { Link } from '@tanstack/react-router';
 import { externalDestinations } from '@/content/destinations';
 import { DesktopNavigation } from './DesktopNavigation';
 import { MobileNavigation } from './MobileNavigation';
@@ -9,12 +9,12 @@ import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function SiteHeader() {
   return <header className="site-header">
-    <InternalLink aria-label="KAG Logistics home" to="/"><Logo /></InternalLink>
+    <Link aria-label="KAG Logistics home" to="/"><Logo /></Link>
     <DesktopNavigation />
     <div className="header-actions">
       <LinkOrUnavailable destination={externalDestinations.customerLogin}>Customer Login</LinkOrUnavailable>
       <ThemeToggle />
-      <InternalLink className="button button-primary" to="/quote">Get a Quote</InternalLink>
+      <Link className="button button-primary" to="/quote">Get a Quote</Link>
       <ShipNowLink />
     </div>
     <MobileNavigation />

@@ -30,6 +30,7 @@
     "src/**/*.tsx",
     "tests/setup.ts",
     "tests/test-router.tsx",
+    "tests/types/**/*.tsx",
     "tests/integration/router-contract.test.tsx",
     "tests/integration/shadcn-primitives.test.tsx",
     "vite.config.ts",
