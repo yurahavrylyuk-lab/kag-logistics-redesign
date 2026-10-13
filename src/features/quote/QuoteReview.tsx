@@ -1,5 +1,6 @@
 import type { QuoteRequest } from './types';
 
+
 function locationLabel(location: QuoteRequest['origin']) {
   const country = location.country === 'CA' ? 'Canada' : location.country === 'US' ? 'United States' : location.country;
   return [location.city, location.region, location.postalCode, country].filter(Boolean).join(', ');

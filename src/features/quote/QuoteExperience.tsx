@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { QuoteFallback } from './QuoteFallback';
 import { QuoteWizard } from './QuoteWizard';

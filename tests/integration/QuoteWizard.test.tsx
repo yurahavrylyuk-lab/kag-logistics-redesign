@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { QuoteWizard } from '@/features/quote/QuoteWizard';
 import { createMockQuoteSubmissionService } from '@/features/quote/mock-service';
+
+// Radix scrolls focused options into view; jsdom has no layout/scrolling API.
+const scrollIntoView = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollIntoView');
+beforeAll(() => Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', { configurable: true, value: () => undefined }));
+afterAll(() => {
+  if (scrollIntoView) Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', scrollIntoView);
+  else Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+});
 
 describe('QuoteWizard', () => {
   it('uses four numbered data-entry steps before an unnumbered review state', async () => {
@@ -46,11 +54,24 @@ describe('QuoteWizard', () => {
     await user.type(screen.getByLabelText('Origin city'), 'Toronto');
     await user.type(screen.getByLabelText('Origin state or province'), 'ON');
     await user.type(screen.getByLabelText('Origin postal code'), 'M5V 1E3');
-    await user.selectOptions(screen.getByLabelText('Origin country'), 'CA');
+    screen.getByRole('combobox', { name: 'Origin country' }).focus();
+    await user.keyboard('{Enter}');
+    await user.keyboard('{End}{Enter}');
+    expect(screen.getByRole('combobox', { name: 'Origin country' })).toHaveTextContent('Canada');
     await user.type(screen.getByLabelText('Destination city'), 'Cleveland');
     await user.type(screen.getByLabelText('Destination state or province'), 'OH');
     await user.type(screen.getByLabelText('Destination postal code'), '44114');
     await user.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByRole('combobox', { name: 'Pickup timing' })).toHaveTextContent('Scheduled');
+    screen.getByRole('combobox', { name: 'Pickup timing' }).focus();
+    await user.keyboard('{Enter}{End}{Enter}');
+    expect(screen.getByRole('combobox', { name: 'Pickup timing' })).toHaveTextContent('Urgent');
+    await user.type(screen.getByLabelText(/Requested pickup date/), '2026-10-20');
+    await user.click(screen.getByRole('button', { name: 'Back' }));
+    expect(screen.getByRole('combobox', { name: 'Origin country' })).toHaveTextContent('Canada');
+    expect(screen.getByLabelText('Origin city')).toHaveValue('Toronto');
+    await user.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByRole('combobox', { name: 'Pickup timing' })).toHaveTextContent('Urgent');
     await user.click(screen.getByRole('button', { name: 'Next' }));
     await user.type(screen.getByLabelText('First name'), 'Taylor');
     await user.type(screen.getByLabelText('Last name'), 'Smith');
@@ -62,6 +83,7 @@ describe('QuoteWizard', () => {
     await user.click(screen.getByRole('button', { name: 'Next' }));
 
     expect(screen.getByText('Toronto, ON, M5V 1E3, Canada')).toBeInTheDocument();
+    expect(screen.getByText('urgent — 2026-10-20')).toBeInTheDocument();
     expect(screen.getByText('555-0100')).toBeInTheDocument();
     expect(screen.getByText('Dock appointment preferred.')).toBeInTheDocument();
   });
