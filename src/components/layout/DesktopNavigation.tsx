@@ -1,8 +1,8 @@
-import Link from 'next/link';
+import { InternalLink } from '@/components/ui/InternalLink';
 import { primaryNavigation } from '@/content/navigation';
 
 export function DesktopNavigation() {
   return <nav aria-label="Primary navigation" className="desktop-nav">
-    {primaryNavigation.map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
+    {primaryNavigation.map((item) => <InternalLink to={item.href} key={item.href}>{item.label}</InternalLink>)}
   </nav>;
 }

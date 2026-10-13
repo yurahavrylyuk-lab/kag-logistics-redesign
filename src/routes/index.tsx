@@ -6,7 +6,7 @@ export const Route = createFileRoute('/')({
 
 function Homepage() {
   return (
-    <main>
+    <main id="main-content">
       <h1>KAG Logistics</h1>
     </main>
   );

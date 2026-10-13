@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { InternalLink } from '@/components/ui/InternalLink';
 import { externalDestinations } from '@/content/destinations';
 import { DesktopNavigation } from './DesktopNavigation';
 import { MobileNavigation } from './MobileNavigation';
@@ -9,12 +9,12 @@ import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function SiteHeader() {
   return <header className="site-header">
-    <Link aria-label="KAG Logistics home" href="/"><Logo /></Link>
+    <InternalLink aria-label="KAG Logistics home" to="/"><Logo /></InternalLink>
     <DesktopNavigation />
     <div className="header-actions">
       <LinkOrUnavailable destination={externalDestinations.customerLogin}>Customer Login</LinkOrUnavailable>
       <ThemeToggle />
-      <Link className="button button-primary" href="/quote">Get a Quote</Link>
+      <InternalLink className="button button-primary" to="/quote">Get a Quote</InternalLink>
       <ShipNowLink />
     </div>
     <MobileNavigation />

@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useCurrentPathname } from '@/app/use-current-pathname';
 import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function FloatingShipNow() {
   const [visibleOnPath, setVisibleOnPath] = useState<string | null>(null);
-  const pathname = usePathname();
+  const pathname = useCurrentPathname();
   const pathKey = pathname ?? '';
   const visible = visibleOnPath === pathKey;
 
