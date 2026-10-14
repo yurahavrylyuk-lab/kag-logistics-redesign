@@ -483,28 +483,29 @@ html[data-quote-ready='true'] .quote-fallback { display: none; }
   .mobile-nav > button { padding-inline: .55rem; }
 }
 
-.supply-scene { display: block; height: auto; width: 100%; }
-.supply-sky { fill: #1b2428; }
-.supply-horizon { fill: #2a3330; }
-.supply-ground { fill: #243027; }
-.supply-road { fill: none; stroke: #3a3a3a; stroke-width: 36; }
-.supply-shoulder { fill: none; stroke: #f4f1ea; stroke-width: 2; }
-.supply-lane { fill: none; stroke: #f5c518; stroke-dasharray: 16 14; stroke-width: 3; }
-.supply-yard rect:nth-child(odd) { fill: #c4552a; }
-.supply-yard rect:nth-child(even) { fill: #2f6f9f; }
-.supply-yard path { fill: none; stroke: rgb(17 17 17 / 35%); stroke-width: 1.5; }
-.supply-warehouse path { fill: #f4f1ea; stroke: #111111; stroke-width: 2; }
-.supply-warehouse path:nth-child(2) { fill: #1b2428; }
-.supply-warehouse path:nth-child(3) { fill: none; }
-.supply-warehouse path:nth-child(4) { fill: #f5c518; stroke: none; }
-.supply-dock-truck rect, .supply-dock-truck path { fill: #d9d9d9; stroke: #111111; stroke-width: 2; }
-.supply-dock-truck circle { fill: #111111; }
-.supply-trailer, .supply-cab { fill: #f5c518; stroke: #111111; stroke-width: 2; }
-.supply-window { fill: #1b2428; stroke: none; }
-.supply-wheels circle { fill: #111111; }
-.supply-hubs circle { fill: #f4f1ea; }
-.supply-route { fill: none; stroke: #ffffff; stroke-dasharray: 6 7; stroke-width: 2; }
-.supply-pins circle { fill: #f5c518; stroke: #111111; stroke-width: 2; }
+.visibility-schematic { background: #f3f5f7; color: #161616; display: grid; gap: .85rem; padding: .85rem .9rem 1rem; }
+.schematic-map { display: block; height: auto; width: 100%; }
+.schematic-paper { fill: #f3f5f7; }
+.schematic-park { fill: #d7e4d2; }
+.schematic-block { fill: #e4e9ee; }
+.schematic-streets path { fill: none; stroke: #d5dce3; stroke-linecap: square; stroke-width: 7; }
+.schematic-done { fill: none; stroke: #161616; stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
+.schematic-ahead { fill: none; stroke: #f5c518; stroke-dasharray: 1 8; stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
+.schematic-stops circle { fill: #ffffff; stroke: #161616; stroke-width: 3; }
+.schematic-stops circle:nth-child(2),
+.schematic-stops circle:nth-child(3) { fill: #f5c518; }
+.schematic-stops circle:nth-child(4) { fill: #2f6f9f; }
+.schematic-vehicle rect { fill: #161616; }
+.schematic-vehicle circle { fill: #f5c518; }
+.schematic-board { color: #161616; display: grid; gap: .65rem; }
+.schematic-scale, .schematic-lane { align-items: center; display: grid; gap: .75rem; grid-template-columns: 5.5rem minmax(0, 1fr); }
+.schematic-hours { color: #5c656d; display: flex; font-size: .68rem; font-weight: 650; justify-content: space-between; }
+.schematic-lanes { display: grid; gap: .7rem; position: relative; }
+.schematic-now { background: #161616; bottom: 0; left: calc(6.25rem + (100% - 6.25rem) * .54); position: absolute; top: 0; width: 2px; }
+.schematic-lane span:first-child { font-size: .78rem; font-weight: 700; }
+.schematic-track { background: #e1e5ea; display: block; height: 2px; position: relative; }
+.schematic-track i { background: #ffffff; border: 2px solid #161616; border-radius: 999px; height: .7rem; position: absolute; top: 50%; transform: translate(-50%, -50%); width: .7rem; }
+.schematic-track i[data-reached='true'] { background: #f5c518; border-color: #f5c518; }
 .supply-stops { display: flex; gap: var(--space-4); justify-content: space-between; margin: 0; }
 .supply-stops span { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
