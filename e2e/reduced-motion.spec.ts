@@ -9,7 +9,7 @@ test('reduced-motion homepage remains horizontally contained', async ({ page }) 
   expect(dimensions.body).toBeLessThanOrEqual(dimensions.viewport);
   await expect(page.locator('.ambient-cursor')).toHaveCount(0);
   await expect(page.locator('[data-choreography-state="static"]')).not.toHaveCount(0);
-  await expect(page.getByLabel('Logistics network from origin to destination')).toBeVisible();
+  await expect(page.getByLabel('Dispatch board')).toBeVisible();
 });
 
 test('reduced motion keeps About choreography static after client navigation', async ({ page }) => {

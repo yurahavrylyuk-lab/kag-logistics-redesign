@@ -4,13 +4,14 @@ import { describe, expect, it } from 'vitest';
 import { Hero } from '@/components/sections/Hero';
 
 describe('Hero', () => {
-  it('renders the logistics scene with a terminal, warehouse, route nodes, and static fallback', async () => {
-    const { container } = renderWithRouter(<Hero />);
-    await screen.findByLabelText('Logistics network from origin to destination');
+  it('renders the dispatch board beside the quote action', async () => {
+    renderWithRouter(<Hero />);
 
-    expect(screen.getByLabelText('Logistics network from origin to destination')).toBeInTheDocument();
-    expect(screen.getByText('Terminal')).toBeInTheDocument();
-    expect(screen.getByText('Warehouse')).toBeInTheDocument();
-    expect(container.querySelectorAll('.route-node')).toHaveLength(3);
+    expect(await screen.findByRole('heading', { level: 1, name: 'Bring complex supply chains under control.' })).toBeInTheDocument();
+    expect(screen.getByRole('complementary', { name: 'Dispatch board' })).toBeInTheDocument();
+    expect(screen.getByText('24/7')).toBeInTheDocument();
+    expect(screen.getByText('North American Coverage')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Get a Quote' })).toHaveAttribute('href', '/quote');
+    expect(screen.getByRole('link', { name: 'Explore Solutions' })).toHaveAttribute('href', '/solutions');
   });
 });

@@ -39,7 +39,7 @@ describe('static build output', () => {
       expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href'), path).toBe(`https://logistics.example${path}`);
       expect(document.querySelector('meta[property="og:url"]')?.getAttribute('content'), path).toBe(`https://logistics.example${path}`);
       expect(document.querySelector('meta[name="twitter:card"]')?.getAttribute('content'), path).toBe('summary');
-      expect(document.querySelector('meta[name="theme-color"]')?.getAttribute('content'), path).toBe('#f5f5f2');
+      expect(document.querySelector('meta[name="theme-color"]')?.getAttribute('content'), path).toBe('#ffffff');
       const theme = document.head.querySelector('script:not([src])');
       expect(theme?.textContent, path).toContain('localStorage.getItem');
       expect(html.indexOf(theme!.outerHTML), path).toBeLessThan(html.indexOf('src="/assets/app.js"'));

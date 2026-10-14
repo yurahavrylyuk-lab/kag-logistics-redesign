@@ -22,7 +22,7 @@ for (const { path } of staticRouteManifest) {
   const { html, metadata } = await renderStaticRoute(path);
   const head = renderToStaticMarkup(<>
     <ThemeBootstrapScript />
-    <meta name="theme-color" content="#f5f5f2" />
+    <meta name="theme-color" content="#ffffff" />
     <title>{metadata.title}</title>
     <meta name="description" content={metadata.description} />
     {metadata.alternates ? <link rel="canonical" href={metadata.alternates.canonical} /> : null}
