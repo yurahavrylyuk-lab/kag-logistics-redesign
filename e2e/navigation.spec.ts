@@ -61,7 +61,7 @@ test('mobile navigation supports keyboard opening, focus wrapping, Escape, and r
   const dialog = page.getByRole('dialog', { name: 'Navigation menu' });
   await expect(dialog.getByRole('button', { name: 'Close navigation' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(dialog.getByLabel('Color theme')).toBeFocused();
+  await expect(dialog.getByRole('button', { name: 'System theme' })).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(dialog.getByRole('button', { name: 'Close navigation' })).toBeFocused();
   await page.keyboard.press('Escape');

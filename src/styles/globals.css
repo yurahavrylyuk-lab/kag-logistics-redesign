@@ -398,6 +398,163 @@ html[data-quote-ready='true'] .quote-fallback { display: none; }
   [data-choreography-state='entering'], [data-choreography-state='exiting'], [data-choreography-state='entering'] .card, [data-choreography-state='exiting'] .card { transform: none; }
 }
 
+.theme-toggle {
+  align-items: center;
+  background: transparent;
+  display: inline-flex;
+  gap: .45rem;
+  min-height: 2.75rem;
+}
+
+.header-actions { flex-wrap: wrap; justify-content: flex-end; row-gap: .5rem; }
+
+.theme-toggle-label {
+  font-size: .875rem;
+  font-weight: 650;
+  letter-spacing: .04em;
+}
+
+.theme-toggle button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  display: inline-flex;
+  height: 2.75rem;
+  justify-content: center;
+  padding: 0;
+  width: 2.75rem;
+}
+
+.theme-toggle button svg {
+  fill: none;
+  height: 1.15rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+  width: 1.15rem;
+}
+
+.theme-toggle button svg.theme-icon-moon {
+  fill: currentColor;
+  stroke: none;
+}
+
+.desktop-nav, .header-actions, .theme-toggle { flex-shrink: 0; }
+.header-actions .unavailable-action { max-width: 14rem; }
+
+@media (min-width: 1024px) {
+  .site-header {
+    align-items: center;
+    display: grid;
+    grid-template-areas: "brand nav" "actions actions";
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: .75rem;
+  }
+
+  .site-header > a[aria-label='KAG Logistics home'] { grid-area: brand; }
+  .desktop-nav { grid-area: nav; justify-self: end; }
+  .header-actions { grid-area: actions; justify-content: flex-end; justify-self: end; }
+}
+
+@media (min-width: 1024px) {
+  .technology-section { grid-template-columns: minmax(16rem, .68fr) minmax(0, 1.32fr); }
+  .command-center { grid-template-columns: minmax(18rem, 1.4fr) minmax(12rem, .72fr) minmax(10rem, .48fr); }
+}
+
+.hub-hero[data-scene] .unavailable-message,
+.detail-hero[data-scene] .unavailable-message,
+.audience-cta.careers-cta .unavailable-message,
+.audience-cta.carrier-cta .unavailable-message { color: #f4f1ea; }
+
+.theme-toggle button[aria-pressed='true'] {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #111111;
+}
+
+.mobile-nav .theme-toggle button { padding-inline: 0; width: 2.75rem; }
+.mobile-nav .ship-now { flex-shrink: 0; white-space: nowrap; }
+
+@media (max-width: 640px) {
+  .mobile-nav .ship-now { font-size: .75rem; letter-spacing: .04em; padding-inline: .5rem; }
+  .mobile-nav > button { padding-inline: .55rem; }
+}
+
+.supply-scene { display: block; height: auto; width: 100%; }
+.supply-sky { fill: #1b2428; }
+.supply-horizon { fill: #2a3330; }
+.supply-ground { fill: #243027; }
+.supply-road { fill: none; stroke: #3a3a3a; stroke-width: 36; }
+.supply-shoulder { fill: none; stroke: #f4f1ea; stroke-width: 2; }
+.supply-lane { fill: none; stroke: #f5c518; stroke-dasharray: 16 14; stroke-width: 3; }
+.supply-yard rect:nth-child(odd) { fill: #c4552a; }
+.supply-yard rect:nth-child(even) { fill: #2f6f9f; }
+.supply-yard path { fill: none; stroke: rgb(17 17 17 / 35%); stroke-width: 1.5; }
+.supply-warehouse path { fill: #f4f1ea; stroke: #111111; stroke-width: 2; }
+.supply-warehouse path:nth-child(2) { fill: #1b2428; }
+.supply-warehouse path:nth-child(3) { fill: none; }
+.supply-warehouse path:nth-child(4) { fill: #f5c518; stroke: none; }
+.supply-dock-truck rect, .supply-dock-truck path { fill: #d9d9d9; stroke: #111111; stroke-width: 2; }
+.supply-dock-truck circle { fill: #111111; }
+.supply-trailer, .supply-cab { fill: #f5c518; stroke: #111111; stroke-width: 2; }
+.supply-window { fill: #1b2428; stroke: none; }
+.supply-wheels circle { fill: #111111; }
+.supply-hubs circle { fill: #f4f1ea; }
+.supply-route { fill: none; stroke: #ffffff; stroke-dasharray: 6 7; stroke-width: 2; }
+.supply-pins circle { fill: #f5c518; stroke: #111111; stroke-width: 2; }
+.supply-stops { display: flex; gap: var(--space-4); justify-content: space-between; margin: 0; }
+.supply-stops span { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.hub-hero[data-scene], .detail-hero[data-scene], .audience-cta.careers-cta, .audience-cta.carrier-cta {
+  background-color: #111111;
+  background-image: linear-gradient(100deg, rgb(12 12 12 / 90%) 0%, rgb(12 12 12 / 68%) 46%, rgb(12 12 12 / 32%) 100%), var(--scene-image);
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.hub-hero[data-scene='careers'], .audience-cta.careers-cta { --scene-image: url('/photos/careers-yard.jpg'); }
+.hub-hero[data-scene='carriers'], .audience-cta.carrier-cta { --scene-image: url('/photos/carriers-highway.jpg'); }
+.hub-hero[data-scene='technology'] { --scene-image: url('/photos/technology-floor.jpg'); }
+.hub-hero[data-scene='about'] { --scene-image: url('/photos/about-terminal.jpg'); }
+.detail-hero[data-scene='solutions'] { --scene-image: url('/photos/solutions-dock.jpg'); }
+.detail-hero[data-scene='industries'] { --scene-image: url('/photos/industries-plant.jpg'); }
+.detail-hero[data-scene='resources'] { --scene-image: url('/photos/resources-desk.jpg'); }
+
+.hub-hero[data-scene] .hub-hero-copy,
+.detail-hero[data-scene] .hub-hero-copy,
+.hub-hero[data-scene] h1,
+.hub-hero[data-scene] p,
+.hub-hero[data-scene] .eyebrow,
+.detail-hero[data-scene] h1,
+.detail-hero[data-scene] p,
+.detail-hero[data-scene] .eyebrow,
+.audience-cta.careers-cta h2,
+.audience-cta.careers-cta p,
+.audience-cta.careers-cta .eyebrow,
+.audience-cta.carrier-cta h2,
+.audience-cta.carrier-cta p,
+.audience-cta.carrier-cta .eyebrow { color: #ffffff; }
+
+.hub-hero[data-scene] .hub-hero-copy > span,
+.detail-hero[data-scene] .hub-hero-copy > span,
+.detail-hero[data-scene] .hub-actions > span {
+  border-color: rgb(255 255 255 / 78%);
+  color: #ffffff;
+}
+
+.hub-hero[data-scene] .button:not(.button-primary),
+.detail-hero[data-scene] .button:not(.button-primary),
+.audience-cta.careers-cta .button,
+.audience-cta.carrier-cta .button {
+  background: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 1ms !important;

@@ -25,7 +25,7 @@ describe('AppProviders', () => {
   it('restores the saved preference after mounting the shell', async () => {
     localStorage.setItem('kag-theme-preference', 'dark');
     render(<AppProviders><ThemeToggle /></AppProviders>);
-    await waitFor(() => expect(screen.getByLabelText('Color theme')).toHaveValue('dark'));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Dark theme' })).toHaveAttribute('aria-pressed', 'true'));
     expect(document.documentElement.dataset.theme).toBe('dark');
     localStorage.clear();
   });
