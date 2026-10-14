@@ -9,14 +9,28 @@ import { ShipNowLink } from '@/components/ui/ShipNowLink';
 
 export function SiteHeader() {
   return <header className="site-header">
-    <Link aria-label="KAG Logistics home" to="/"><Logo /></Link>
-    <DesktopNavigation />
-    <div className="header-actions">
-      <LinkOrUnavailable destination={externalDestinations.customerLogin}>Customer Login</LinkOrUnavailable>
-      <ThemeToggle />
-      <Link className="button button-primary" to="/quote">Get a Quote</Link>
-      <ShipNowLink />
+    <div className="header-banner">
+      <p className="header-banner-copy">
+        <span aria-hidden="true" className="header-live" />
+        <span className="header-banner-track">
+          <span>Live dispatch · 24/7 North American coverage · Multimodal freight</span>
+          <span aria-hidden="true">Live dispatch · 24/7 North American coverage · Multimodal freight</span>
+        </span>
+      </p>
+      <div className="header-banner-tools">
+        <LinkOrUnavailable destination={externalDestinations.customerLogin}>Customer Login</LinkOrUnavailable>
+        <ThemeToggle />
+      </div>
     </div>
-    <MobileNavigation />
+    <div className="header-bar">
+      <Link aria-label="KAG Logistics home" to="/"><Logo /></Link>
+      <DesktopNavigation />
+      <div className="header-actions">
+        <Link className="button button-primary" to="/quote">Get a Quote</Link>
+        <ShipNowLink />
+      </div>
+      <MobileNavigation />
+    </div>
+    <div aria-hidden="true" className="header-route" />
   </header>;
 }
