@@ -2,7 +2,10 @@
 .worktrees/
 .superpowers/
 node_modules/
-.next/
+.vercel/
+.env
+.env.*
+!.env.example
 dist/
 .tanstack/
 coverage/

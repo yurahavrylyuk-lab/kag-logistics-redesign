@@ -5,7 +5,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['.next/**', '.tanstack/**', 'dist/**', 'node_modules/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'src/routeTree.gen.ts']),
+  globalIgnores(['.vercel/**', '.tanstack/**', 'dist/**', 'node_modules/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'src/routeTree.gen.ts']),
   {
     files: ['**/*.{js,mjs,ts,tsx}'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

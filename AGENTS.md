@@ -1,9 +1,14 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# KAG Logistics
 
-## This is NOT the Next.js you know
+This is a Vite + React static application with TanStack Router. Read
+`docs/architecture.md` for ownership, import boundaries, route generation,
+static delivery, and the locally owned shadcn/ui workflow.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Preserve the public URL manifest, no-JavaScript route content and quote fallback,
+the configured quote recipient and Ship Now destination, accessible controls,
+theme behavior, and reduced-motion support.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and
+`npm run test:e2e` before completing application changes. The browser suite builds
+and starts its own Vite preview on port 4173. Do not hand-edit
+`src/routeTree.gen.ts` or generated `dist/` output.

@@ -10,7 +10,7 @@ test('compact mobile view has no horizontal overflow and routes to quote', async
 
 test('mobile floating Ship Now stays within the viewport and never overlays quote controls', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'networkidle' });
   await page.locator('#hero').evaluate((hero) => window.scrollTo(0, window.scrollY + hero.getBoundingClientRect().bottom + 1));
 
   const floating = page.getByRole('link', { name: 'Persistent Ship Now' });
@@ -22,6 +22,16 @@ test('mobile floating Ship Now stays within the viewport and never overlays quot
 
   await page.goto('/quote');
   await expect(page.getByRole('link', { name: 'Persistent Ship Now' })).toHaveCount(0);
+});
+
+test('direct About, Technology, and Quote pages stay within the compact mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ['/about', '/technology', '/quote']) {
+    await page.goto(path, { waitUntil: 'networkidle' });
+    await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('html')).toHaveJSProperty('scrollWidth', 390);
+    await expect(page.getByRole('button', { name: 'Open navigation' })).toBeVisible();
+  }
 });
 
 test('landscape mobile navigation keeps its Ship Now action reachable', async ({ page }) => {

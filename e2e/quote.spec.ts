@@ -7,6 +7,12 @@ async function expectAccessibleQuote(page: Page) {
 }
 
 test('quote wizard validates, completes four data-entry steps, and prepares an email', async ({ page }) => {
+  const mailtoRequests: string[] = [];
+  const client = await page.context().newCDPSession(page);
+  await client.send('Page.enable');
+  client.on('Page.frameRequestedNavigation', ({ url }) => {
+    if (url.startsWith('mailto:')) mailtoRequests.push(url);
+  });
   await page.goto('/quote');
   await expect(page.getByText('Step 1 of 4')).toBeVisible();
   await expectAccessibleQuote(page);
@@ -51,4 +57,12 @@ test('quote wizard validates, completes four data-entry steps, and prepares an e
   await page.getByRole('button', { name: 'Request Pricing' }).click();
   await expect(page.getByRole('heading', { name: 'Your quote email is ready to send' })).toBeVisible();
   await expect(page.getByText(/send it from your email client to complete the request/i)).toBeVisible();
+  await expect.poll(() => mailtoRequests.length).toBe(1);
+  const draft = new URL(mailtoRequests[0]);
+  expect(draft.pathname).toBe('delta.qoralis@gmail.com');
+  expect(draft.searchParams.get('subject')).toBe('KAG Logistics Quote Request — Acme — Cleveland, OH to Columbus, OH');
+  expect(draft.searchParams.get('body')).toContain('Business email: taylor@example.com');
+  expect(draft.searchParams.get('body')).toContain('Origin: Cleveland, OH, CA');
+  expect(draft.searchParams.get('body')).toContain('Pickup timing: Urgent');
+  await client.detach();
 });

@@ -26,12 +26,18 @@ test('process timeline counts maintain accessible contrast in both themes', asyn
   }
 });
 
-test('About and the post-hero floating Ship Now state have no blocking accessibility violations', async ({ page }) => {
-  await page.goto('/about');
-  const aboutResults = await new AxeBuilder({ page }).analyze();
-  expect(aboutResults.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? ''))).toEqual([]);
+test('About, Technology, and the post-hero Ship Now state have no blocking accessibility violations', async ({ page }) => {
+  for (const path of ['/about', '/technology']) {
+    for (const theme of ['light', 'dark']) {
+      await page.goto(path);
+      await page.getByLabel('Color theme').selectOption(theme);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? ''))).toEqual([]);
+    }
+  }
 
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'networkidle' });
   await page.locator('#hero').evaluate((hero) => window.scrollTo(0, window.scrollY + hero.getBoundingClientRect().bottom + 1));
   await expect(page.getByRole('link', { name: 'Persistent Ship Now' })).toBeVisible();
   const postHeroResults = await new AxeBuilder({ page }).analyze();
