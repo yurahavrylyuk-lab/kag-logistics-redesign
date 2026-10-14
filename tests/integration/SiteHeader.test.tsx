@@ -11,7 +11,7 @@ describe('SiteHeader', () => {
     await screen.findByRole('navigation', { name: 'Primary navigation' });
 
     expect(screen.queryByRole('link', { name: 'Customer Login' })).not.toBeInTheDocument();
-    expect(screen.getByText('Customer Login is not configured for this prototype.')).toBeInTheDocument();
+    expect(screen.getByText('Customer Login is not configured yet.')).toBeInTheDocument();
   });
 
   it('uses the approved primary navigation and configured Ship Now CTA', async () => {

@@ -10,13 +10,13 @@ export const resources: Resource[] = [
     slug: 'building-supply-chain-control',
     category: 'Logistics Insight',
     title: 'Building a clearer operating picture',
-    summary: 'A prototype resource pattern for logistics content and operational education.',
+    summary: 'A logistics resource for operating pictures, education, and day-to-day control.',
   },
   {
     slug: 'transportation-management-pattern',
     category: 'Case Study',
     title: 'A transportation management pattern',
-    summary: 'Illustrative prototype content. Production case studies require verified KAG results.',
+    summary: 'An illustrative transportation pattern. Published case studies require verified KAG results.',
   },
   {
     slug: 'visibility-exceptions',

@@ -9,11 +9,11 @@ const carrierBenefits = ['Clear lane and equipment conversations', 'A practical 
 
 function CarriersPage() {
   return <RouteMain id="main-content">
-    <HubHero eyebrow="Carriers" title="Move with a network that values the work">
+    <HubHero eyebrow="Carriers" scene="carriers" title="Move with a network that values the work">
       <p>A deliberate starting point for carrier relationships, with the practical information needed to decide whether to start a conversation.</p>
       <Link className="button button-primary" to="/quote">Discuss freight opportunities</Link>
     </HubHero>
-    <section className="content-section"><p className="eyebrow">Carrier experience</p><h2>Clarity at every handoff</h2><p>Explore the relationship themes this prototype is designed to support: opportunities, predictable communication, document visibility, and resource access once verified destinations are available.</p><CapabilityList items={carrierBenefits} /><div className="hub-actions"><LinkOrUnavailable destination={externalDestinations.carrierRegistration}>Carrier registration</LinkOrUnavailable><LinkOrUnavailable destination={externalDestinations.carrierResources}>Carrier resources</LinkOrUnavailable></div></section>
+    <section className="content-section"><p className="eyebrow">Carrier experience</p><h2>Clarity at every handoff</h2><p>Explore the relationship themes this page is designed to support: opportunities, predictable communication, document visibility, and resource access once verified destinations are available.</p><CapabilityList items={carrierBenefits} /><div className="hub-actions"><LinkOrUnavailable destination={externalDestinations.carrierRegistration}>Carrier registration</LinkOrUnavailable><LinkOrUnavailable destination={externalDestinations.carrierResources}>Carrier resources</LinkOrUnavailable></div></section>
   </RouteMain>;
 }
 

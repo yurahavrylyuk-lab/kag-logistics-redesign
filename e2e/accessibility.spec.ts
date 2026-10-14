@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 test('homepage has no critical automated accessibility violations in both themes', async ({ page }) => {
   for (const theme of ['light', 'dark'] as const) {
     await page.goto('/');
-    await page.getByLabel('Color theme').selectOption(theme);
+    await page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: theme === 'light' ? 'Light theme' : 'Dark theme' }).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     const results = await new AxeBuilder({ page }).analyze();
     const blocking = results.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? ''));
@@ -15,7 +15,7 @@ test('homepage has no critical automated accessibility violations in both themes
 test('process timeline counts maintain accessible contrast in both themes', async ({ page }) => {
   for (const theme of ['light', 'dark'] as const) {
     await page.goto('/');
-    await page.getByLabel('Color theme').selectOption(theme);
+    await page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: theme === 'light' ? 'Light theme' : 'Dark theme' }).click();
 
     const results = await new AxeBuilder({ page })
       .include('.process-timeline')
@@ -30,7 +30,7 @@ test('About, Technology, and the post-hero Ship Now state have no blocking acces
   for (const path of ['/about', '/technology']) {
     for (const theme of ['light', 'dark']) {
       await page.goto(path);
-      await page.getByLabel('Color theme').selectOption(theme);
+      await page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: theme === 'light' ? 'Light theme' : 'Dark theme' }).click();
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       const results = await new AxeBuilder({ page }).analyze();
       expect(results.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? ''))).toEqual([]);
@@ -47,7 +47,7 @@ test('About, Technology, and the post-hero Ship Now state have no blocking acces
 test('About KAG contrast remains accessible in both themes', async ({ page }) => {
   for (const theme of ['light', 'dark'] as const) {
     await page.goto('/');
-    await page.getByLabel('Color theme').selectOption(theme);
+    await page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: theme === 'light' ? 'Light theme' : 'Dark theme' }).click();
     const results = await new AxeBuilder({ page }).include('.about-kag').withRules(['color-contrast']).analyze();
     expect(results.violations).toEqual([]);
   }

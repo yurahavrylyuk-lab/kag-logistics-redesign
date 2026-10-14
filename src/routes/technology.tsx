@@ -8,7 +8,7 @@ import { technologyCapabilities, technologySummary } from '@/content/technology'
 
 function TechnologyPage() {
   return <RouteMain id="main-content">
-    <HubHero eyebrow="Technology" title="Operational control at human scale">
+    <HubHero eyebrow="Technology" scene="technology" title="Operational control at human scale">
       <p>{technologySummary}</p>
       <a className="button button-primary" href="#capabilities">Explore capabilities</a>
     </HubHero>
