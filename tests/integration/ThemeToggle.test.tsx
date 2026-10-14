@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from '@/features/theme/ThemeProvider';
@@ -75,5 +75,24 @@ describe('ThemeToggle', () => {
     await user.selectOptions(select, 'system');
 
     expect(document.documentElement.dataset.theme).toBe('dark');
+  });
+
+  it('follows system changes while system is selected and releases its listener on unmount', () => {
+    const { unmount } = render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
+    expect(listener).toBeDefined();
+    act(() => listener?.({ matches: false } as MediaQueryListEvent));
+    expect(document.documentElement.dataset.theme).toBe('light');
+    unmount();
+    expect(listener).toBeUndefined();
+  });
+
+  it('initializes and changes theme when storage access fails', async () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked'); });
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked'); });
+    const user = userEvent.setup();
+    render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    await user.selectOptions(screen.getByLabelText('Color theme'), 'light');
+    expect(document.documentElement.dataset.theme).toBe('light');
   });
 });

@@ -7,6 +7,7 @@
       "es2022"
     ],
     "allowJs": false,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -17,23 +18,29 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "types": ["vite/client", "@testing-library/jest-dom"],
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "scripts/**/*.ts",
+    "scripts/**/*.tsx",
+    "tests/setup.ts",
+    "tests/test-router.tsx",
+    "tests/types/**/*.tsx",
+    "tests/integration/router-contract.test.tsx",
+    "tests/integration/shadcn-primitives.test.tsx",
+    "tests/integration/client-delivery.test.tsx",
+    "tests/integration/static-render.test.tsx",
+    "tests/unit/static-output.test.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "playwright.config.ts"
   ],
   "exclude": [
     "node_modules"
