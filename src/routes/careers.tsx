@@ -7,7 +7,7 @@ import { externalDestinations } from '@/content/destinations';
 
 function CareersPage() {
   return <RouteMain id="main-content">
-    <HubHero eyebrow="Careers" title="Build what moves industry">
+    <HubHero eyebrow="Careers" scene="careers" title="Build what moves industry">
       <p>For people who want their work to have operational weight: solve problems, support customers, and help keep critical supply chains moving.</p>
       <LinkOrUnavailable destination={externalDestinations.jobs}>Search open positions</LinkOrUnavailable>
     </HubHero>

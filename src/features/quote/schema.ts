@@ -7,6 +7,6 @@ export const quoteSchema = z.object({
   pickup: z.object({ date: z.string().optional(), flexibility: z.enum(['scheduled', 'flexible', 'urgent']) }),
   contact: z.object({ firstName: z.string().min(1, 'Enter a first name.'), lastName: z.string().min(1, 'Enter a last name.'), company: z.string().min(1, 'Enter a company.'), email: z.string().email('Enter a valid email.'), phone: z.string().optional() }),
   notes: z.string().optional(),
-  consent: z.object({ privacyAccepted: z.boolean().refine((accepted) => accepted, 'Confirm the prototype acknowledgement to continue.'), marketingOptIn: z.boolean().optional() }),
+  consent: z.object({ privacyAccepted: z.boolean().refine((accepted) => accepted, 'Confirm the acknowledgement to continue.'), marketingOptIn: z.boolean().optional() }),
   source: z.object({ page: z.string().min(1), campaign: z.string().optional() }),
 });

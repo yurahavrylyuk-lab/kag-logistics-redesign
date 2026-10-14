@@ -50,10 +50,11 @@ describe('ThemeToggle', () => {
       </ThemeProvider>,
     );
 
-    const select = screen.getByLabelText('Color theme');
+    expect(screen.getByRole('group', { name: 'Color theme' })).toBeInTheDocument();
+    expect(screen.getByText('Theme')).toBeInTheDocument();
     expect(document.documentElement.dataset.theme).toBe('dark');
 
-    await user.selectOptions(select, 'light');
+    await user.click(screen.getByRole('button', { name: 'Light theme' }));
 
     expect(localStorage.getItem('kag-theme-preference')).toBe('light');
     expect(document.documentElement.dataset.theme).toBe('light');
@@ -66,13 +67,11 @@ describe('ThemeToggle', () => {
   it('uses the current OS value when the preference returns to system', async () => {
     const user = userEvent.setup();
     render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
-    const select = screen.getByLabelText('Color theme');
-
-    await user.selectOptions(select, 'light');
+    await user.click(screen.getByRole('button', { name: 'Light theme' }));
     systemDark = false;
-    await user.selectOptions(select, 'dark');
+    await user.click(screen.getByRole('button', { name: 'Dark theme' }));
     systemDark = true;
-    await user.selectOptions(select, 'system');
+    await user.click(screen.getByRole('button', { name: 'System theme' }));
 
     expect(document.documentElement.dataset.theme).toBe('dark');
   });
@@ -92,7 +91,7 @@ describe('ThemeToggle', () => {
     const user = userEvent.setup();
     render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
     expect(document.documentElement.dataset.theme).toBe('dark');
-    await user.selectOptions(screen.getByLabelText('Color theme'), 'light');
+    await user.click(screen.getByRole('button', { name: 'Light theme' }));
     expect(document.documentElement.dataset.theme).toBe('light');
   });
 });

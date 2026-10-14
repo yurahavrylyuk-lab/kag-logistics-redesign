@@ -17,7 +17,7 @@ const fixedRoutes = [
   { path: '/quote', title: 'Request pricing', description: 'Start a logistics shipment conversation with KAG Logistics.' },
   { path: '/solutions', title: 'Solutions', description: 'Representative transportation and logistics solution patterns.' },
   { path: '/industries', title: 'Industries', description: 'Representative industry logistics patterns.' },
-  { path: '/resources', title: 'Resources', description: 'Representative logistics resources and prototype editorial patterns.' },
+  { path: '/resources', title: 'Resources', description: 'Logistics resources, insights, and editorial patterns.' },
 ];
 
 export const staticRouteManifest: StaticRoute[] = [
