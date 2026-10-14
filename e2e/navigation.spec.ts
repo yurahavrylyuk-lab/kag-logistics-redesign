@@ -1,5 +1,22 @@
 import { expect, test } from '@playwright/test';
 
+test('footer keyboard navigation focuses and announces the committed destination', async ({ page }) => {
+  await page.goto('/');
+  const announcement = page.getByRole('status', { name: 'Page navigation' });
+  await expect(announcement).toBeEmpty();
+  const about = page.getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'About', exact: true });
+  await about.focus();
+  await page.keyboard.press('Enter');
+  const heading = page.getByRole('main').getByRole('heading', { level: 1, name: 'Built to keep complex supply chains moving.' });
+  await expect(heading).toBeFocused();
+  await expect(announcement).toHaveText('Built to keep complex supply chains moving.');
+  await expect(announcement).toHaveAttribute('aria-live', 'polite');
+  await expect(announcement).toHaveAttribute('aria-atomic', 'true');
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(5);
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('main').getByRole('link', { name: 'Get a Quote', exact: true })).toBeFocused();
+});
+
 test('static assets and SEO files retain their own response instead of the HTML fallback', async ({ page, request }) => {
   for (const [path, contentType, content] of [
     ['/robots.txt', 'text/plain', 'User-agent: *'],
@@ -54,6 +71,8 @@ test('mobile navigation supports keyboard opening, focus wrapping, Escape, and r
   await dialog.getByRole('link', { name: 'Technology', exact: true }).click();
   await expect(page).toHaveURL(/\/technology$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Operational control at human scale' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Operational control at human scale' })).toBeFocused();
+  await expect(page.getByRole('status', { name: 'Page navigation' })).toHaveText('Operational control at human scale');
   await expect(dialog).toHaveCount(0);
 });
 
